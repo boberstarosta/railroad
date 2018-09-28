@@ -2,8 +2,9 @@
 import pyglet
 from pyglet.gl import *
 from .camera import Camera
-from railroad.network.network import Network
+from .gui.gui import Gui
 from .modes import *
+from .network.network import Network
 
 
 class App:
@@ -16,6 +17,7 @@ class App:
         self.batch = pyglet.graphics.Batch()
         self.camera = Camera(self.window)
         self.network = Network(self)
+        self.gui = Gui(self)
         self.fps_display = pyglet.window.FPSDisplay(self.window)
         self.mode = None
     
@@ -69,5 +71,6 @@ class App:
         self.camera.apply_world_projection()
         self.batch.draw()
         self.camera.apply_gui_projection()
+        self.gui.draw()
         self.fps_display.draw()
 
