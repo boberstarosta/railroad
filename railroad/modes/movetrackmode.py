@@ -5,7 +5,9 @@ from .. import geometry
 
 
 class MoveTrackMode(BaseMode):
-    
+
+    name = "Move track"
+
     def __init__(self, app):
         super().__init__(app)
         self.active_node = None

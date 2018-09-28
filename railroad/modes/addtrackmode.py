@@ -6,7 +6,9 @@ from ..network.edge import Edge
 
 
 class AddTrackMode(BaseMode):
-    
+
+    name = "Add track"
+
     def __init__(self, app):
         super().__init__(app)
         self.start_node = None

@@ -8,7 +8,8 @@ from ..network.opentrackmarker import OpenTrackMarker
 
 
 class AddTrackObjectMode(BaseMode):
-    
+
+    name = "Add track object"
     def __init__(self, app):
         super().__init__(app)
         self.track_object_class = Signal

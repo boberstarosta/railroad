@@ -4,7 +4,9 @@ from .basemode import BaseMode
 
 
 class SwitchJunctionMode(BaseMode):
-    
+
+    name = "Switch junction"
+
     def on_mouse_press(self, x, y, buttons, modifiers):
         if buttons & pyglet.window.mouse.LEFT:
             mouse = self.app.camera.to_world(x, y)

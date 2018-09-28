@@ -11,6 +11,8 @@ class Gui:
         self.app = app
         self.batch = pyglet.graphics.Batch()
         self._create_buttons()
+        self.notification_timer = 0
+        self.notification = None
 
     def _create_buttons(self, padding=10):
         button_args_list = [
@@ -28,8 +30,23 @@ class Gui:
             ChangeModeButton(self, *args, x=x, y=y)
             x += ChangeModeButton.image_back.width + padding
 
+    def show_notification(self, text, time=2):
+        if self.notification is not None:
+            self.notification.delete()
+        self.notification = pyglet.text.Label(
+            text, font_size=24, bold=True, color=(255, 255, 255, 127),
+            x=self.app.window.width//2, y=self.app.window.height//2,
+            width=self.app.window.width,
+            anchor_x="center", anchor_y="center", align="center", multiline=True,
+            batch=self.batch, group=graphics.group.gui_front
+        )
+        self.notification_timer = time
+
     def update(self, dt):
-        pass
+        if self.notification is not None:
+            self.notification_timer -= dt
+            if self.notification_timer <= 0:
+                self.notification.delete()
 
     def draw(self):
         self.batch.draw()

@@ -5,7 +5,9 @@ from ..network.edge import Edge
 
 
 class RemoveNodeMode(BaseMode):
-    
+
+    name = "Remove track node"
+
     def on_mouse_press(self, x, y, buttons, modifiers):
         if buttons & pyglet.window.mouse.LEFT:
             mouse = self.app.camera.to_world(x, y)
