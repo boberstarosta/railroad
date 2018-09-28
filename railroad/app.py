@@ -8,7 +8,7 @@ from .modes import *
 
 class App:
     
-    def __init__(self, width=1000, height=800):
+    def __init__(self, width=1500, height=800):
         pyglet.clock.schedule_interval(self.on_fast_update, 1/60)
         pyglet.clock.schedule_interval(self.on_slow_update, 1/20)
         self.window = pyglet.window.Window(width=width, height=height, resizable=True)
