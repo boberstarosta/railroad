@@ -20,7 +20,12 @@ class Edge(BaseEdge):
         self.track_segments = []        
         self.update_track()
         self.network.edges.append(self)
-        
+
+        # Update track for all connected edges
+        for node in self.nodes:
+            for other_edge in node.other_edges(self):
+                other_edge.update_track()
+
     def delete(self):
         super().delete()
         self.network.edges.remove(self)
