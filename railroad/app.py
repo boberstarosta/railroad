@@ -10,8 +10,6 @@ from .network.network import Network
 class App:
     
     def __init__(self, width=1500, height=800):
-        pyglet.clock.schedule_interval(self.on_fast_update, 1/60)
-        pyglet.clock.schedule_interval(self.on_slow_update, 1/20)
         self.window = pyglet.window.Window(width=width, height=height, resizable=True)
         self.window.push_handlers(self)
         self.batch = pyglet.graphics.Batch()
@@ -20,7 +18,9 @@ class App:
         self.gui = Gui(self)
         self.fps_display = pyglet.window.FPSDisplay(self.window)
         self.mode = None
-    
+        pyglet.clock.schedule_interval(self.camera.update, 1/60)
+        pyglet.clock.schedule_interval(self.network.update, 1/20)
+
     def change_mode(self, mode_class):
         if self.mode is not None:
             self.mode.delete()
@@ -48,22 +48,28 @@ class App:
                 self.change_mode(RotateTrackObjectMode)
             elif symbol == pyglet.window.key.O and modifiers & pyglet.window.key.MOD_SHIFT:
                 self.network.show_nodes = not self.network.show_nodes
-    
+
+        self.mode.on_key_press(symbol, modifiers)
+
+    def on_mouse_motion(self, x, y, dx, dy):
+        self.mode.on_mouse_motion(x, y, dx, dy)
+
+    def on_mouse_drag(self, x, y, dx, dy, buttons, modifiers):
+        self.mode.on_mouse_drag(x, y, dx, dy, buttons, modifiers)
+
     def on_mouse_press(self, x, y, buttons, modifiers):
         if buttons & pyglet.window.mouse.RIGHT:
             self.camera.move_to_window_coords(x, y)
-    
+        self.mode.on_mouse_press(x, y, buttons, modifiers)
+
+    def on_mouse_release(self, x, y, buttons, modifiers):
+        self.mode.on_mouse_release(x, y, buttons, modifiers)
+
     def on_mouse_scroll(self, x, y, scroll_x, scroll_y):
         if scroll_y > 0:
             self.camera.zoom_in()
         elif scroll_y < 0:
             self.camera.zoom_out()
-    
-    def on_fast_update(self, dt):
-        self.camera.update(dt)
-
-    def on_slow_update(self, dt):
-        self.network.update(dt)
 
     def on_draw(self):
         glClearColor(0.10, 0.30, 0.05, 1.0)
