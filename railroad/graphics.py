@@ -48,14 +48,26 @@ class img:
     corona_red    = pyglet.resource.image("data/corona red.png")
     corona_white  = pyglet.resource.image("data/corona white.png")
 
+    button_background      = pyglet.resource.image("data/gui/button.png")
+    button_pressed         = pyglet.resource.image("data/gui/button pressed.png")
+    button_add_track       = pyglet.resource.image("data/gui/add track.png")
+    button_move_track      = pyglet.resource.image("data/gui/move track.png")
+    button_delete_track    = pyglet.resource.image("data/gui/delete track.png")
+    button_insert_node     = pyglet.resource.image("data/gui/insert node.png")
+    button_remove_node     = pyglet.resource.image("data/gui/remove node.png")
+    button_switch_junction = pyglet.resource.image("data/gui/switch junction.png")
+
+
 for attr in [getattr(img, i) for i in dir(img)]:
     if isinstance(attr, pyglet.image.TextureRegion):
         attr.anchor_x = attr.width / 2
         attr.anchor_y = attr.height / 2
 
+
 class tex:
     ballast = pyglet.resource.texture("data/track ballast.png")
     rails = pyglet.resource.texture("data/track rails.png")
+
 
 class group:
     ballast = OrderedTextureGroup(1, tex.ballast)
@@ -65,3 +77,5 @@ class group:
     signal  = pyglet.graphics.OrderedGroup(5)
     corona  = pyglet.graphics.OrderedGroup(6)
 
+    gui_back  = pyglet.graphics.OrderedGroup(10)
+    gui_front = pyglet.graphics.OrderedGroup(11)

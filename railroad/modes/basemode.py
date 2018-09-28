@@ -1,6 +1,8 @@
 class BaseMode:
+
     min_track_length = 500  # 5 meters
     _search_radius = 40  # 40 screen pixels
+    name = None
 
     def __init__(self, app):
         self.app = app

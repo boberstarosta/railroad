@@ -16,10 +16,12 @@ class App:
         self.camera = Camera(self.window)
         self.network = Network(self)
         self.gui = Gui(self)
+        self.window.push_handlers(self.gui)
         self.fps_display = pyglet.window.FPSDisplay(self.window)
         self.mode = None
         pyglet.clock.schedule_interval(self.camera.update, 1/60)
         pyglet.clock.schedule_interval(self.network.update, 1/20)
+        pyglet.clock.schedule_interval(self.gui.update, 1/20)
 
     def change_mode(self, mode_class):
         if self.mode is not None:
@@ -79,4 +81,3 @@ class App:
         self.camera.apply_gui_projection()
         self.gui.draw()
         self.fps_display.draw()
-
