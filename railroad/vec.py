@@ -4,13 +4,13 @@ import collections
 
 
 class Vec(collections.namedtuple('Vec', ['x', 'y'])):
-    def __new__(cls, *coords, **kwargs):
-        if len(coords) == 0:
+    def __new__(cls, *args, **kwargs):
+        if len(args) == 0:
             x = y = 0
-        elif len(coords) == 1:
-            x, y = coords[0]
-        elif len(coords) == 2:
-            x, y = coords[0], coords[1]
+        elif len(args) == 1:
+            x, y = args[0]
+        elif len(args) == 2:
+            x, y = args[0], args[1]
         else:
             raise ValueError
         if not isinstance(x, numbers.Number) or not isinstance(y, numbers.Number):
