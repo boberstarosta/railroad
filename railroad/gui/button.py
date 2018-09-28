@@ -27,7 +27,15 @@ class Button:
         self.action = action
         self._pressed = False
 
-        gui.app.window.push_handlers(self)
+        gui.app.window.push_handlers(self.on_mouse_press)
+        gui.app.window.push_handlers(self.on_mouse_release)
+
+    def delete(self):
+        self.gui.app.window.remove_handler("on_mouse_press", self.on_mouse_press)
+        self.gui.app.window.remove_handler("on_mouse_release", self.on_mouse_release)
+        self.sprite.delete()
+        self.sprite_back.delete()
+        self.sprite_pressed.delete()
 
     def on_mouse_press(self, x, y, buttons, modifiers):
         if buttons & pyglet.window.mouse.LEFT and geometry.point_in_rect((x, y), *self.rect):

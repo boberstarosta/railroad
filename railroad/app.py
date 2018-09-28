@@ -16,7 +16,6 @@ class App:
         self.camera = Camera(self.window)
         self.network = Network(self)
         self.gui = Gui(self)
-        self.window.push_handlers(self.gui)
         self.fps_display = pyglet.window.FPSDisplay(self.window)
         self.mode = None
         pyglet.clock.schedule_interval(self.camera.update, 1/60)
@@ -24,12 +23,13 @@ class App:
         pyglet.clock.schedule_interval(self.gui.update, 1/20)
 
     def change_mode(self, mode_class):
-        if self.mode is not None:
-            self.mode.delete()
-        self.mode = mode_class(self)
-        text = "Changed mode to: " + (type(self.mode).__name__ if self.mode.name is None else self.mode.name)
-        self.gui.show_notification(text)
-    
+        if type(self.mode) is not mode_class:
+            if self.mode is not None:
+                self.mode.delete()
+            self.mode = mode_class(self)
+            text = "Changed mode to: " + (type(self.mode).__name__ if self.mode.name is None else self.mode.name)
+            self.gui.show_notification(text)
+
     def on_key_press(self, symbol, modifiers):
         if not modifiers & pyglet.window.key.MOD_CTRL:
             if symbol == pyglet.window.key.A:
