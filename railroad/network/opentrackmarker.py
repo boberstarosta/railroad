@@ -1,8 +1,8 @@
 
 import pyglet
+
 from .basetrackobject import BaseTrackObject
 from .. import graphics
-from ..vec import Vec
 
 
 class OpenTrackMarker(BaseTrackObject):

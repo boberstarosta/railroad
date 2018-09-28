@@ -1,7 +1,8 @@
 
 import math
-from collections import namedtuple
+
 from .vec import Vec
+
 
 def bezier3(p0, p1, p2, p3, t):
     return p0*(1 - t)**3 + p1*3*(1 - t)**2*t + p2*3*(1 - t)*t**2 + p3*t**3
@@ -45,6 +46,8 @@ def farthest_point(pos, points):
             farthest = index
     return farthest
 
+
+# noinspection PyChainedComparisons
 def point_in_rect(point, x, y, w, h):
     return point[0] >= x and point[1] >= y and point[0] < x + w and point[1] < y + h
 
@@ -151,8 +154,6 @@ def generate_bezier(p0, d0, p1, d1, precision=10):
     return curve
 
 def generate_curve(p0, d0, p1, d1, precision=10):
-    curve = []
-    
     t0 = intersect_param(p0, d0, p1, d1)
     t1 = intersect_param(p1, d1, p0, d0)
     

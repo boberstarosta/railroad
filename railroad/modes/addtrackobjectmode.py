@@ -28,5 +28,5 @@ class AddTrackObjectMode(BaseMode):
             nearest_segment = self.app.network.get_nearest_track_segment(mouse, max_distance=self.search_radius)
             if nearest_segment is not None:
                 t = geometry.nearest_t_on_line(mouse, nearest_segment.nodes[0].position, nearest_segment.nodes[1].position)
-                to = self.track_object_class(self.app.network, nearest_segment, t)
+                self.track_object_class(self.app.network, nearest_segment, t)
 

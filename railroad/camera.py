@@ -1,13 +1,14 @@
-
-import pyglet
 from pyglet.gl import *
+
 from .vec import Vec
 
 
 class Camera:
     
     def __init__(self, window, position=Vec(0,0), zoom_index=3,
-            zoom_levels=[1/64, 1/32, 1/16, 1/8, 1/4, 1/2, 1], zoom_move_time=0.5):
+                 zoom_levels=None, zoom_move_time=0.5):
+        if zoom_levels is None:
+            zoom_levels = [1 / 64, 1 / 32, 1 / 16, 1 / 8, 1 / 4, 1 / 2, 1]
         self.window = window
 
         self.position = position

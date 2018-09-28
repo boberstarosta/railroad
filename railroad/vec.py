@@ -41,7 +41,7 @@ class Vec(collections.namedtuple('Vec', ['x', 'y'])):
         return self.__class__(-self.x, -self.y)
     
     @classmethod
-    def dot(self, v1, v2):
+    def dot(cls, v1, v2):
         """Returns dot product of 2 vectors. Ex.: Vec(2, 3).dot(Vec(3, 4)) ==> 18 """
 
         return v1.x * v2.x + v1.y * v2.y

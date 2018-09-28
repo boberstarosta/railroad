@@ -1,10 +1,10 @@
 
 import pyglet
-from .. import graphics
-from ..vec import Vec
-from ..geometry import intersect_point
+
 from .baseedge import BaseEdge
-from .signal import Signal
+from .. import graphics
+from ..geometry import intersect_point
+from ..vec import Vec
 
 
 class TrackSegment(BaseEdge):
@@ -38,7 +38,9 @@ class TrackSegment(BaseEdge):
             and to not in exclude
         )
     
-    def nearest_track_object(self, to_class, node, min_t=None, max_t=None, exclude=[]):
+    def nearest_track_object(self, to_class, node, min_t=None, max_t=None, exclude=None):
+        if exclude is None:
+            exclude = []
         if node is self.nodes[0]:
             rotated = False
         elif node is self.nodes[1]:

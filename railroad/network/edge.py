@@ -1,10 +1,10 @@
 
 import pyglet
-from .. import geometry
-from ..vec import Vec
+
 from .baseedge import BaseEdge
 from .tracknode import TrackNode
 from .tracksegment import TrackSegment
+from .. import geometry
 
 
 class Edge(BaseEdge):

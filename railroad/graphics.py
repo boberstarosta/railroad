@@ -1,5 +1,3 @@
-
-import pyglet
 from pyglet.gl import *
 
 

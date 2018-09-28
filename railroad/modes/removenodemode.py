@@ -16,6 +16,6 @@ class RemoveNodeMode(BaseMode):
                     has_all_straight = False not in [e.straight for e in nearest_node.edges]
                     for edge in nearest_node.edges:
                         edge.delete()
-                    new_edge = Edge(self.app.network, other_nodes[0], other_nodes[1], straight=has_all_straight)
+                    Edge(self.app.network, other_nodes[0], other_nodes[1], straight=has_all_straight)
                     nearest_node.delete()
 

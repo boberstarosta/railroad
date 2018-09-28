@@ -38,7 +38,7 @@ class TrackNode(BaseNode):
 
     @property
     def is_switched(self):
-        return self.parent_node._is_switched
+        return self.parent_node.is_switched
     
     @property
     def current_edge_set(self):

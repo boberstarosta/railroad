@@ -1,5 +1,3 @@
-
-import pyglet
 from .basesignal import BaseSignal
 from .opentrackmarker import OpenTrackMarker
 from .. import graphics

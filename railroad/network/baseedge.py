@@ -2,7 +2,7 @@
 class BaseEdge:
     
     @classmethod
-    def is_possible(self, node1, node2):
+    def is_possible(cls, node1, node2):
         different = node1 is not node2
         not_connected = not node1.is_connected(node2)
         have_free_connections = node1.has_free_connections and node2.has_free_connections

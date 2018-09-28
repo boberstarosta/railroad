@@ -1,7 +1,3 @@
-
-from .. import graphics
-
-
 class BaseTrackObject:
     
     def __init__(self, network, parent_segment, t):

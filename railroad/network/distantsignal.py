@@ -1,5 +1,3 @@
-
-import pyglet
 from .basesignal import BaseSignal
 from .signal import Signal
 from .. import graphics

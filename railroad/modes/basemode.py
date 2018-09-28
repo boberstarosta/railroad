@@ -1,7 +1,3 @@
-
-import pyglet
-
-
 class BaseMode:
     min_track_length = 500  # 5 meters
     _search_radius = 40  # 40 screen pixels

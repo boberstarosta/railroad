@@ -25,7 +25,7 @@ class App:
         self.mode = mode_class(self)
     
     def on_key_press(self, symbol, modifiers):
-        if not modifiers & (pyglet.window.key.MOD_CTRL):
+        if not modifiers & pyglet.window.key.MOD_CTRL:
             if symbol == pyglet.window.key.A:
                 self.change_mode(AddTrackMode)
             elif symbol == pyglet.window.key.M:

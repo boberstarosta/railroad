@@ -1,10 +1,10 @@
 
 import pyglet
-from ..vec import Vec
-from .. import graphics
-from .. import geometry
+
 from .basenode import BaseNode
 from .tracknode import TrackNode
+from .. import geometry
+from .. import graphics
 
 
 class Node(BaseNode):

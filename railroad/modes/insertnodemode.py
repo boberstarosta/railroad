@@ -21,6 +21,6 @@ class InsertNodeMode(BaseMode):
                 if not too_close:
                     old_edge.delete()
                     new_node = Node(self.app.network, position)
-                    edge0 = Edge(self.app.network,  nodes[0], new_node, old_edge.straight)
-                    edge1 = Edge(self.app.network, new_node, nodes[1], old_edge.straight)
+                    Edge(self.app.network,  nodes[0], new_node, old_edge.straight)
+                    Edge(self.app.network, new_node, nodes[1], old_edge.straight)
 

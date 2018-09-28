@@ -1,7 +1,3 @@
-
-from .. import geometry
-
-
 class BaseNode:
 
     max_connections = 3

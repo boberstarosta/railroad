@@ -1,8 +1,6 @@
 
-import pyglet
-from .node import Node
-from .edge import Edge
 from ..geometry import dist_to_segment
+from .signal import Signal
 
 
 class Network:
@@ -21,7 +19,9 @@ class Network:
         for to in self.track_objects:
             to.update(dt)
     
-    def get_nearest_node(self, position, excluded=[], max_distance=40):
+    def get_nearest_node(self, position, excluded=None, max_distance=40):
+        if excluded is None:
+            excluded = []
         max_distance_sq = max_distance**2
         nearest_node = None
         shortest_distance_sq = float("inf")
