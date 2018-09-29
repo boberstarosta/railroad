@@ -32,28 +32,6 @@ class App:
             self.gui.show_notification(text)
 
     def on_key_press(self, symbol, modifiers):
-        if not modifiers & pyglet.window.key.MOD_CTRL:
-            if symbol == pyglet.window.key.A:
-                self.change_mode(AddTrackMode)
-            elif symbol == pyglet.window.key.M:
-                self.change_mode(MoveTrackMode)
-            elif symbol == pyglet.window.key.S:
-                self.change_mode(StraightenTrackMode)
-            elif symbol == pyglet.window.key.I:
-                self.change_mode(InsertNodeMode)
-            elif symbol == pyglet.window.key.J:
-                self.change_mode(SwitchJunctionMode)
-            elif symbol == pyglet.window.key.D:
-                self.change_mode(DeleteTrackMode)
-            elif symbol == pyglet.window.key.X:
-                self.change_mode(RemoveNodeMode)
-            elif symbol == pyglet.window.key.K:
-                self.change_mode(AddTrackObjectMode)
-            elif symbol == pyglet.window.key.R:
-                self.change_mode(RotateTrackObjectMode)
-            elif symbol == pyglet.window.key.O and modifiers & pyglet.window.key.MOD_SHIFT:
-                self.network.show_nodes = not self.network.show_nodes
-
         self.mode.on_key_press(symbol, modifiers)
 
     def on_mouse_motion(self, x, y, dx, dy):

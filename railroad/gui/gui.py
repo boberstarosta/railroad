@@ -4,6 +4,7 @@ from pyglet.gl import *
 from .. import graphics
 from .status import Status
 from .panel import Panel
+from .modeselect import ModeSelect
 
 
 class Gui:
@@ -14,6 +15,7 @@ class Gui:
         self.notification = None
         self.status = Status(self)
         self.panel = Panel(self)
+        self.mode_select = ModeSelect(self)
         self.panel.hide()
         self.app.window.push_handlers(self)
 
