@@ -32,6 +32,8 @@ class App:
             self.gui.show_notification(text)
 
     def on_key_press(self, symbol, modifiers):
+        if symbol == pyglet.window.key.O and modifiers & pyglet.window.key.MOD_SHIFT:
+            self.network.show_nodes = not self.network.show_nodes
         self.mode.on_key_press(symbol, modifiers)
 
     def on_mouse_motion(self, x, y, dx, dy):
