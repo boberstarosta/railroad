@@ -28,6 +28,7 @@ class ModeSelect:
         self.check_sprite = pyglet.sprite.Sprite(graphics.img.gui_radio_check,
                                                  batch=gui.batch,
                                                  group=graphics.group.gui_front)
+        self.check_sprite.scale = 0.75
         self.sprites = []
         self.labels = []
 
@@ -39,6 +40,7 @@ class ModeSelect:
                 batch=gui.batch,
                 group=graphics.group.gui_mid)
             sprite.opacity = 127
+            sprite.scale = 0.75
             label = pyglet.text.Label(
                 text,
                 font_size=11, bold=False,
