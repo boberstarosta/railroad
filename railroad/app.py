@@ -27,7 +27,7 @@ class App:
             if self.mode is not None:
                 self.mode.delete()
             self.mode = mode_class(self)
-            text = "Changed mode to: " + (type(self.mode).__name__ if self.mode.name is None else self.mode.name)
+            text = "Mode: " + (type(self.mode).__name__ if self.mode.name is None else self.mode.name)
             self.gui.show_notification(text)
 
     def on_key_press(self, symbol, modifiers):
