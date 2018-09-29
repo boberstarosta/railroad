@@ -20,6 +20,8 @@ class ModeSelect:
         (key.R, RotateTrackObjectMode),
     ]
 
+    sprite_scale = 0.6
+
     def __init__(self, gui, padding=10):
         self.gui = gui
         self._index = 0
@@ -28,7 +30,7 @@ class ModeSelect:
         self.check_sprite = pyglet.sprite.Sprite(graphics.img.gui_radio_check,
                                                  batch=gui.batch,
                                                  group=graphics.group.gui_front)
-        self.check_sprite.scale = 0.75
+        self.check_sprite.scale = self.sprite_scale
         self.sprites = []
         self.labels = []
 
@@ -40,10 +42,11 @@ class ModeSelect:
                 batch=gui.batch,
                 group=graphics.group.gui_mid)
             sprite.opacity = 127
-            sprite.scale = 0.75
+            sprite.scale = self.sprite_scale
             label = pyglet.text.Label(
                 text,
                 font_size=11, bold=False,
+                anchor_y="center",
                 color=(255, 255, 255, 127),
                 batch=gui.batch,
                 group=graphics.group.gui_front)
@@ -53,15 +56,15 @@ class ModeSelect:
         gui.app.window.push_handlers(self.on_resize, self.on_key_press, self.on_mouse_press)
 
     def _update_positions(self, height):
-        sprite_x = self.padding + graphics.img.gui_radio.width//2
-        label_x = sprite_x + graphics.img.gui_radio.width
+        sprite_x = self.padding + graphics.img.gui_radio.width/2
+        label_x = sprite_x + graphics.img.gui_radio.width/2
         row_y = height/2 + (graphics.img.gui_radio.height + self.padding) * len(self.sprites)/2 + self.padding
         for i, (sprite, label) in enumerate(zip(self.sprites, self.labels)):
             row_y -= sprite.height + self.padding
             sprite.x = sprite_x
             label.x = label_x
             sprite.y = row_y
-            label.y = row_y - (sprite.height - label.content_height)//2
+            label.y = row_y
             if i == self.index:
                 self.check_sprite.x = sprite_x
                 self.check_sprite.y = row_y
