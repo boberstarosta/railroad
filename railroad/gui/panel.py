@@ -9,7 +9,7 @@ class Panel:
     color_fill=  (127, 127, 127, 95)
     color_frame = (192, 192, 192, 255)
 
-    width = 300
+    width = 200
 
     def __init__(self, gui):
         self.gui = gui
