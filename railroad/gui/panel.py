@@ -11,6 +11,7 @@ class Panel:
 
     def __init__(self, gui):
         self.gui = gui
+        self.sprite = None
         gui.app.window.push_handlers(self.on_resize, self.on_mouse_press)
 
     def _generate_vertices(self, width, height):
@@ -34,8 +35,18 @@ class Panel:
         graphics.img.gui_frame_bottom.image_data.blit_to_texture(
             texture.target, 0, 0, 0, gl.GL_RGBA)
 
-        middle_height = height - graphics.img.gui_frame_top.height - graphics.img.gui_frame_bottom.height
-        graphics.img.gui_frame_middle.scale = 200
+        # Trying to access middle image data
+        middle_data = graphics.img.gui_frame_middle.get_image_data()
+        data_width = middle_data.width
+        data = middle_data.get_data("RGBA", 4 * data_width)
+
+        # pos = (data_width * y + x) * 4
+        # rgba = map(ord, data[pos:pos + 3])
+
+        # TODO: Create a new image of the right size and fill it with data
+        # middle_height = height - graphics.img.gui_frame_top.height - graphics.img.gui_frame_bottom.height
+        # new_image.set_data('RGBA', middle_data.width * 4, data)
+
         y = graphics.img.gui_frame_bottom.height
         graphics.img.gui_frame_middle.image_data.blit_to_texture(
             texture.target, 0, 0, y, gl.GL_RGBA)
@@ -43,8 +54,12 @@ class Panel:
         return texture
 
     def on_resize(self, width, height):
+        if self.sprite is not None:
+            self.sprite.delete()
         image = self._generate_image( height)
         self.sprite = pyglet.sprite.Sprite(image, batch=self.gui.batch, group=graphics.group.gui_back)
+        self.sprite.position = width - self.sprite.width, 0
+        self.sprite.opacity = 95
         self.rect = (self.sprite.x, self.sprite.y, self.sprite.width, self.sprite.height)
 
     def on_mouse_press(self, x, y, buttons, modifiers):
