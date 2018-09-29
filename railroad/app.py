@@ -20,7 +20,7 @@ class App:
         self.mode = None
         pyglet.clock.schedule_interval(self.camera.update, 1/60)
         pyglet.clock.schedule_interval(self.network.update, 1/20)
-        pyglet.clock.schedule_interval(self.gui.update, 1/20)
+        pyglet.clock.schedule_interval(self.gui.update, 1/60)
 
     def change_mode(self, mode_class):
         if type(self.mode) is not mode_class:

@@ -60,18 +60,10 @@ class img:
     corona_red    = pyglet.resource.image("data/corona red.png")
     corona_white  = pyglet.resource.image("data/corona white.png")
 
-    button_background      = pyglet.resource.image("data/gui/button.png")
-    button_pressed         = pyglet.resource.image("data/gui/button pressed.png")
-    button_add_track       = pyglet.resource.image("data/gui/add track.png")
-    button_move_track      = pyglet.resource.image("data/gui/move track.png")
-    button_delete_track    = pyglet.resource.image("data/gui/delete track.png")
-    button_insert_node     = pyglet.resource.image("data/gui/insert node.png")
-    button_remove_node     = pyglet.resource.image("data/gui/remove node.png")
-    button_switch_junction = pyglet.resource.image("data/gui/switch junction.png")
-
     gui_frame_top    = pyglet.resource.image("data/gui/frame top.png")
     gui_frame_middle = pyglet.resource.image("data/gui/frame mid.png")
-    gui_frame_bottom = pyglet.resource.image("data/gui/frame bottom.png")
+    gui_radio        = pyglet.resource.image("data/gui/radio.png")
+    gui_radio_check  = pyglet.resource.image("data/gui/radio check.png")
 
 
 for attr in [getattr(img, i) for i in dir(img)]:
@@ -94,4 +86,5 @@ class group:
     corona  = pyglet.graphics.OrderedGroup(6)
 
     gui_back  = pyglet.graphics.OrderedGroup(12, parent=texture_disable_group)
-    gui_front = pyglet.graphics.OrderedGroup(13, parent=texture_disable_group)
+    gui_mid = pyglet.graphics.OrderedGroup(13, parent=texture_disable_group)
+    gui_front = pyglet.graphics.OrderedGroup(14, parent=texture_disable_group)
