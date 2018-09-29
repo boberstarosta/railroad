@@ -69,6 +69,10 @@ class img:
     button_remove_node     = pyglet.resource.image("data/gui/remove node.png")
     button_switch_junction = pyglet.resource.image("data/gui/switch junction.png")
 
+    gui_frame_top    = pyglet.resource.image("data/gui/frame top.png")
+    gui_frame_middle = pyglet.resource.image("data/gui/frame mid.png")
+    gui_frame_bottom = pyglet.resource.image("data/gui/frame bottom.png")
+
 
 for attr in [getattr(img, i) for i in dir(img)]:
     if isinstance(attr, pyglet.image.TextureRegion):
