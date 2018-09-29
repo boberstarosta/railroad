@@ -10,7 +10,8 @@ from .network.network import Network
 class App:
     
     def __init__(self, width=1500, height=800):
-        self.window = pyglet.window.Window(width=width, height=height, resizable=True)
+        self.window = pyglet.window.Window(caption = "railroad", width=width, height=height, resizable=True)
+        self.window.set_minimum_size(800, 600)
         self.window.push_handlers(self)
         self.batch = pyglet.graphics.Batch()
         self.camera = Camera(self.window)

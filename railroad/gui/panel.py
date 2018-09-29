@@ -58,7 +58,6 @@ class Panel:
     def on_mouse_press(self, x, y, buttons, modifiers):
         if buttons & pyglet.window.mouse.LEFT \
         and geometry.point_in_rect((x, y), self.sprite.x, self.sprite.y, self.sprite.width, self.sprite.height):
-            self.hide()
             return pyglet.event.EVENT_HANDLED
 
     def hide(self):
@@ -77,5 +76,8 @@ class Panel:
             elif self.sprite.x > self.gui.app.window.width:
                 self._hidden = True
                 self.speed = 0
-                self.show()
                 self.sprite.x = self.gui.app.window.width
+
+    @property
+    def hidden(self):
+        return self._hidden

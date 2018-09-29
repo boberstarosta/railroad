@@ -14,6 +14,7 @@ class Gui:
         self.notification = None
         self.status = Status(self)
         self.panel = Panel(self)
+        self.panel.hide()
         self.app.window.push_handlers(self)
 
     def show_notification(self, text, time=2):
@@ -38,3 +39,10 @@ class Gui:
 
     def draw(self):
         self.batch.draw()
+
+    def on_key_press(self, symbol, modifiers):
+        if symbol == pyglet.window.key.F1:
+            if self.panel.hidden:
+                self.panel.show()
+            else:
+                self.panel.hide()
