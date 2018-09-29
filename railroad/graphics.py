@@ -13,8 +13,20 @@ class TextureEnableGroup(pyglet.graphics.Group):
         glDisable(GL_BLEND)
 
 
-texture_enable_group = TextureEnableGroup()
+class TextureDisableGroup(pyglet.graphics.Group):
 
+    def set_state(self):
+        glEnable(GL_BLEND)
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+        glDisable(GL_TEXTURE_2D)
+
+    def unset_state(self):
+        glDisable(GL_TEXTURE_2D)
+        glDisable(GL_BLEND)
+
+
+texture_enable_group = TextureEnableGroup()
+texture_disable_group = TextureDisableGroup()
 
 class OrderedTextureGroup(pyglet.graphics.OrderedGroup):
 
@@ -77,5 +89,5 @@ class group:
     signal  = pyglet.graphics.OrderedGroup(5)
     corona  = pyglet.graphics.OrderedGroup(6)
 
-    gui_back  = pyglet.graphics.OrderedGroup(10)
-    gui_front = pyglet.graphics.OrderedGroup(11)
+    gui_back  = pyglet.graphics.OrderedGroup(12, parent=texture_disable_group)
+    gui_front = pyglet.graphics.OrderedGroup(13, parent=texture_disable_group)
