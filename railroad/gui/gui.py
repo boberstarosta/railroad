@@ -5,6 +5,7 @@ from .. import graphics
 from .status import Status
 from .panel import Panel
 from .modeselect import ModeSelect
+from .trackobjectselect import TrackObjectSelect
 
 
 class Gui:
@@ -15,7 +16,8 @@ class Gui:
         self.notification = None
         self.status = Status(self)
         self.panel = Panel(self)
-        self.mode_select = ModeSelect(self)
+        self.mode_select = ModeSelect(self, "left", "center")
+        self.track_object_select = TrackObjectSelect(self, "left", "bottom")
         self.panel.hide()
         self.app.window.push_handlers(self)
 
