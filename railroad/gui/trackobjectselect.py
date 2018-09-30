@@ -12,8 +12,8 @@ class TrackObjectSelect(RadioGroup):
     def __init__(self, gui, align_x, align_y, padding=10):
         self.object_data = [
             (key.S, Signal),
-            (key.N, DistantSignal),
             (key.C, BlockSignal),
+            (key.N, DistantSignal),
             (key.O, OpenTrackMarker),
         ]
         data = [(k, oc.__name__) for k, oc in self.object_data]
