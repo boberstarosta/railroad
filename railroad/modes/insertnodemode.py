@@ -8,7 +8,7 @@ from ..network.edge import Edge
 
 class InsertNodeMode(BaseMode):
 
-    name = "Insert track"
+    name = "Insert node"
 
     def on_mouse_press(self, x, y, buttons, modifiers):
         if buttons & pyglet.window.mouse.LEFT:

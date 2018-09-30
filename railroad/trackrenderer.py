@@ -5,7 +5,7 @@ from .geometry import *
 
 class TrackRenderer:
 
-    WIDTH = 200  # 2 m
+    WIDTH = 250  # 2.5 m
     instances = []
     texture_ballast = pyglet.resource.texture("data/track ballast.png")
     texture_rails = pyglet.resource.texture("data/track rails.png")
