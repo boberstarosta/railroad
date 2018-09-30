@@ -30,10 +30,16 @@ class Edge(BaseEdge):
                 other_edge.renderer.update_track()
 
     def delete(self):
+        other_edges = {e for n in self.nodes for e in n.other_edges(self)}
         super().delete()
         self.network.edges.remove(self)
         self._delete_track()
         self.renderer.delete()
+
+        for other_edge in other_edges:
+            other_edge.update_track()
+        for other_edge in other_edges:
+            other_edge.renderer.update_track()
 
     def _delete_track(self):
         for track_node in self.track_nodes:
