@@ -18,10 +18,10 @@ class ModeSelect(RadioGroup):
             (key.K, AddTrackObjectMode),
             (key.R, RotateTrackObjectMode),
             (key.L, RemoveTrackObjectMode),
+            (key.SEMICOLON, MoveTrackObjectMode),
         ]
         data = [(k, mc.name) for k, mc in self.mode_data]
         super().__init__(gui, data, align_x, align_y, padding)
     
     def on_index_changed(self, value):
         self.gui.app.change_mode(self.mode_data[value][1])
-

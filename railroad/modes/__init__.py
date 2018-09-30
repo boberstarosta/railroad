@@ -8,4 +8,5 @@ from .deletetrackmode import DeleteTrackMode
 from .removenodemode import RemoveNodeMode
 from .addtrackobjectmode import AddTrackObjectMode
 from .rotatetrackobjectmode import RotateTrackObjectMode
+from .movetrackobjectmode import MoveTrackObjectMode
 from .removetrackobjectmode import RemoveTrackObjectMode
