@@ -19,11 +19,12 @@ class Status:
         self.label.y = height - 10
 
     def generate_text(self):
-        mode_name = type(self.gui.mode).__name__ if self.gui.app.mode.name is None else self.gui.app.mode.name
         camera_pos = "{:.1f}, {:.1f}".format(self.gui.app.camera.position.x/100, self.gui.app.camera.position.y/100)
         zoom = "{:.0f} m".format(15 / self.gui.app.camera.zoom)
+        fps = "{:.2f}".format(pyglet.clock.get_fps())
 
-        return "Mode: {}\nCamera at: {}\nCamera height: {}".format(mode_name, camera_pos, zoom)
+        return "Camera position: {}\nCamera height: {}\nFPS: {}"\
+            .format(camera_pos, zoom, fps)
 
     def update(self, dt):
         self.label.text = self.generate_text()

@@ -5,7 +5,6 @@ from .camera import Camera
 from .ground import Ground
 from .gui.gui import Gui
 from .network.network import Network
-from .trackrenderer import TrackRenderer
 
 
 class App:
@@ -19,7 +18,6 @@ class App:
         self.ground = Ground(self)
         self.network = Network(self)
         self.gui = Gui(self)
-        self.fps_display = pyglet.window.FPSDisplay(self.window)
         self.mode = None
         pyglet.clock.schedule_interval(self.camera.update, 1/60)
         pyglet.clock.schedule_interval(self.network.update, 1/20)
@@ -65,4 +63,3 @@ class App:
         self.batch.draw()
         self.camera.apply_gui_projection()
         self.gui.draw()
-        self.fps_display.draw()
