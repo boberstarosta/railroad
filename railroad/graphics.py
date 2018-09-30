@@ -28,10 +28,15 @@ for attr in [getattr(img, i) for i in dir(img)]:
 
 class tex:
     ground = pyglet.resource.texture("data/ground.jpg")
+    ballast = pyglet.resource.texture("data/track ballast.png")
+    rails = pyglet.resource.texture("data/track rails.png")
 
 
 class group:
     ground  = pyglet.graphics.TextureGroup(tex.ground, parent=pyglet.graphics.OrderedGroup(0))
+
+    ballast = pyglet.graphics.TextureGroup(tex.ballast, parent=pyglet.graphics.OrderedGroup(1))
+    rails   = pyglet.graphics.TextureGroup(tex.rails, parent=pyglet.graphics.OrderedGroup(2))
 
     node    = pyglet.graphics.OrderedGroup(3)
     arrow   = pyglet.graphics.OrderedGroup(4)

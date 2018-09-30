@@ -1,47 +1,27 @@
 
 from pyglet.gl import *
 from .geometry import *
+from . import graphics
 
 
 class TrackRenderer:
-
     WIDTH = 250  # 2.5 m
-    instances = []
-    texture_ballast = pyglet.resource.texture("data/track ballast.png")
-    texture_rails = pyglet.resource.texture("data/track rails.png")
-
-    @classmethod
-    def draw(cls):
-        glEnable(GL_BLEND)
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
-        glEnable(GL_TEXTURE_2D)
-        glBindTexture(cls.texture_ballast.target, cls.texture_ballast.id)
-        glBegin(GL_QUADS)
-        for instance in cls.instances:
-            for vertex, tex_coord in zip(instance.vertices, instance.tex_coords):
-                glTexCoord2fv(tex_coord)
-                glVertex2fv(vertex)
-        glEnd()
-        glBindTexture(cls.texture_rails.target, cls.texture_rails.id)
-        glBegin(GL_QUADS)
-        for instance in cls.instances:
-            for vertex, tex_coord in zip(instance.vertices, instance.tex_coords):
-                glTexCoord2fv(tex_coord)
-                glVertex2fv(vertex)
-        glEnd()
 
     def __init__(self, edge):
         self.edge = edge
-        self.vertices = []
-        self.tex_coords = []
-        self.instances.append(self)
+        self.vertex_list_ballast = None
+        self.vertex_list_rails = None
 
     def delete(self):
-        self.instances.remove(self)
+        if self.vertex_list_ballast is not None:
+            self.vertex_list_ballast.delete()
+        if self.vertex_list_rails is not None:
+            self.vertex_list_rails.delete()
+        self.vertex_list_ballast = None
+        self.vertex_list_rails = None
 
     def clear(self):
-        self.vertices = []
-        self.tex_coords = []
+        self.delete()
 
     def update_track(self):
         vertices = []
@@ -89,15 +69,19 @@ class TrackRenderer:
                 intersect = intersect_point(r_start, dir12, p2, side2dir)
                 r2 = r_end if intersect is None else intersect
 
-            vertices.extend(((GLfloat*2)(*r1), (GLfloat*2)(*l1), (GLfloat*2)(*l2), (GLfloat*2)(*r2)))
+            vertices.extend([*r1] + [*l1] + [*l2] + [*r2])
 
             tw = length / self.WIDTH
             tex_coords.extend((
-                (GLfloat*2)(0, 0),
-                (GLfloat*2)(0, 1),
-                (GLfloat*2)(tw, 1),
-                (GLfloat*2)(tw, 0)
+                0, 0,
+                0, 1,
+                tw, 1,
+                tw, 0
             ))
 
-        self.vertices = vertices
-        self.tex_coords = tex_coords
+        self.vertex_list_ballast = self.edge.network.app.batch.add(
+            len(vertices)//2, pyglet.gl.GL_QUADS, graphics.group.ballast, "v2f", "t2f")
+        self.vertex_list_rails = self.edge.network.app.batch.add(
+            len(tex_coords)//2, pyglet.gl.GL_QUADS, graphics.group.rails, "v2f", "t2f")
+        self.vertex_list_ballast.vertices = self.vertex_list_rails.vertices = vertices
+        self.vertex_list_ballast.tex_coords = self.vertex_list_rails.tex_coords = tex_coords

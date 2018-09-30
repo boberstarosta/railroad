@@ -62,7 +62,6 @@ class App:
         glClearColor(0.10, 0.30, 0.05, 1.0)
         self.window.clear()
         self.camera.apply_world_projection()
-        TrackRenderer.draw()
         self.batch.draw()
         self.camera.apply_gui_projection()
         self.gui.draw()
