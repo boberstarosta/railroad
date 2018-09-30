@@ -20,8 +20,8 @@ class Signal(BaseSignal):
         graphics.img.corona_white,
     ]
     
-    def __init__(self, network, parent_segment, t):
-        super().__init__(network, parent_segment, t)
+    def __init__(self, network, parent_segment, t, rotated=False):
+        super().__init__(network, parent_segment, t, rotated)
         self.setting = "stop"
     
     def update_setting(self):

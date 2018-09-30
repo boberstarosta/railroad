@@ -32,6 +32,15 @@ def save_network(network, filename):
         straight = str(edge.straight)
         lines.append("|".join((symbol, nodes, straight)))
 
+    for to in network.track_objects:
+        symbol = "TO"
+        type_ = type_to_str[type(to)]
+        parent_edge = str(network.edges.index(to.parent_segment.parent_edge))
+        parent_segment_index = str(to.parent_segment.parent_edge.track_segments.index(to.parent_segment))
+        t = str(to.t)
+        rotated = str(to.rotated)
+        lines.append("|".join((symbol, type_, parent_edge, parent_segment_index, t, rotated)))
+
     with open(filename, mode="w") as f:
         f.write("\n".join(lines))
 
@@ -43,6 +52,7 @@ def load_network(network, filename):
 
     node_records = []
     edge_records = []
+    to_records = []
 
     with open(filename, mode="r") as f:
         for line in f.readlines():
@@ -52,6 +62,8 @@ def load_network(network, filename):
                 node_records.append(data)
             elif symbol == "E":
                 edge_records.append(data)
+            elif symbol == "TO":
+                to_records.append(data)
 
     for record in node_records:
         str_pos = record[0]
@@ -63,3 +75,11 @@ def load_network(network, filename):
         node1, node2 = [network.nodes[int(i)] for i in str_node_indices]
         straight = str_straight == "True"
         Edge(network, node1, node2, straight)
+
+    for s_type, s_edge, s_segm_index, s_t, s_rot in to_records:
+        type_ = str_to_type[s_type]
+        edge = network.edges[int(s_edge)]
+        parent_segment = edge.track_segments[int(s_segm_index)]
+        t = float(s_t)
+        rotated = s_rot == "True"
+        type_(network, parent_segment, t, rotated=rotated)

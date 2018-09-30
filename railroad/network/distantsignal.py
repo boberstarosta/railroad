@@ -17,8 +17,8 @@ class DistantSignal(BaseSignal):
         graphics.img.corona_orange,
     ]
     
-    def __init__(self, network, parent_segment, t):
-        super().__init__(network, parent_segment, t)
+    def __init__(self, network, parent_segment, t, rotated=False):
+        super().__init__(network, parent_segment, t, rotated)
     
     def update_setting(self):
         next_setting = "off"

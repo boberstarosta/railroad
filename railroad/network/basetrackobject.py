@@ -1,11 +1,11 @@
 class BaseTrackObject:
     
-    def __init__(self, network, parent_segment, t):
+    def __init__(self, network, parent_segment, t, rotated):
         self.network = network
         self.parent_segment = parent_segment
         self.parent_segment.track_objects.append(self)
         self._t = t
-        self._rotated = False
+        self._rotated = rotated
         self.network.track_objects.append(self)
     
     def delete(self):

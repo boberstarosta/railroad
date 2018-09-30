@@ -7,8 +7,8 @@ from .. import graphics
 
 class OpenTrackMarker(BaseTrackObject):
     
-    def __init__(self, network, parent_segment, t):
-        super().__init__(network, parent_segment, t)
+    def __init__(self, network, parent_segment, t, rotated=False):
+        super().__init__(network, parent_segment, t, rotated)
         self.sprite = pyglet.sprite.Sprite(graphics.img.arrow_blue, batch=network.app.batch, group=graphics.group.signal)
         self.sprite.scale = 200 / self.sprite.image.height
         self.update_sprite_pos()

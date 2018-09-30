@@ -18,8 +18,8 @@ class BlockSignal(BaseSignal):
         graphics.img.corona_orange,
     ]
 
-    def __init__(self, network, parent_segment, t):
-        super().__init__(network, parent_segment, t)
+    def __init__(self, network, parent_segment, t, rotated=False):
+        super().__init__(network, parent_segment, t, rotated)
         self.setting = "full"
 
     class TrackAhead:

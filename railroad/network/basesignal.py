@@ -16,8 +16,8 @@ class BaseSignal(BaseTrackObject):
     image = None
     corona_images = []
     
-    def __init__(self, network, parent_segment, t):
-        super().__init__(network, parent_segment, t)
+    def __init__(self, network, parent_segment, t, rotated):
+        super().__init__(network, parent_segment, t, rotated)
         self.sprite = pyglet.sprite.Sprite(self.image, batch=network.app.batch, group=graphics.group.signal)
         self.sprite.scale = self.height / self.sprite.image.height
         self.corona_sprites = [
