@@ -24,7 +24,8 @@ def save_network(network, filename):
     for node in network.nodes:
         symbol = "N"
         pos = "{},{}".format(node.position.x, node.position.y)
-        lines.append("|".join((symbol, pos)))
+        switched = str(node.is_switched)
+        lines.append("|".join((symbol, pos, switched)))
 
     for edge in network.edges:
         symbol = "E"
@@ -53,6 +54,7 @@ def load_network(network, filename):
     node_records = []
     edge_records = []
     to_records = []
+    nodes_to_switch = []
 
     with open(filename, mode="r") as f:
         for line in f.readlines():
@@ -65,10 +67,12 @@ def load_network(network, filename):
             elif symbol == "TO":
                 to_records.append(data)
 
-    for record in node_records:
-        str_pos = record[0]
+    for str_pos, str_switched in node_records:
         pos = Vec([float(s) for s in str_pos.split(",")])
-        Node(network, pos)
+        switched = str_switched == "True"
+        node = Node(network, pos)
+        if switched:
+            nodes_to_switch.append(node)
 
     for str_nodes, str_straight in edge_records:
         str_node_indices = str_nodes.split(",")
@@ -76,10 +80,13 @@ def load_network(network, filename):
         straight = str_straight == "True"
         Edge(network, node1, node2, straight)
 
-    for s_type, s_edge, s_segm_index, s_t, s_rot in to_records:
+    for s_type, s_edge, s_segment_index, s_t, s_rot in to_records:
         type_ = str_to_type[s_type]
         edge = network.edges[int(s_edge)]
-        parent_segment = edge.track_segments[int(s_segm_index)]
+        parent_segment = edge.track_segments[int(s_segment_index)]
         t = float(s_t)
         rotated = s_rot == "True"
         type_(network, parent_segment, t, rotated=rotated)
+
+    for node in nodes_to_switch:
+        node.switch()
