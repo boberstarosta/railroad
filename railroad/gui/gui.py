@@ -19,7 +19,7 @@ class Gui:
         self.panel.hide()
         self.app.window.push_handlers(self)
 
-    def show_notification(self, text, time=2):
+    def show_notification(self, text, time=1):
         if self.notification is not None:
             self.notification.delete()
         self.notification = pyglet.text.Label(

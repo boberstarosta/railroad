@@ -59,7 +59,7 @@ class TrackRenderer:
             p3 = None if next_segment is None else next_segment.other_node(segment.nodes[1]).position
 
             length = (p2 - p1).length
-            dir12 = (p2 - p1) / length
+            dir12 = Vec(0, 0) if length == 0 else (p2 - p1) / length
             dir12perp = Vec(-dir12.y, dir12.x)
 
             l_start = p1 + dir12perp * half_width

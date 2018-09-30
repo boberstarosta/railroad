@@ -84,7 +84,7 @@ def intersect_point(p0, d0, p1, d1):
     else:
         return p0 + d0 * t
 
-def generate_circular_arc(p0, d0, p1, d1, precision=10):
+def generate_circular_arc(p0, d0, p1, d1, precision):
     curve = []
     
     t0 = intersect_param(p0, d0, p1, d1)
@@ -127,7 +127,7 @@ def generate_circular_arc(p0, d0, p1, d1, precision=10):
     cangle1 = (pni1 - center).angle
     radius = (pni0 - center).length
     
-    steps = int(abs(angle_difference(cangle0, cangle1, not convergent)) // precision)
+    steps = min(int(abs(angle_difference(cangle0, cangle1, not convergent)) // precision), 20)
     for i in range(1, steps):
         t = i / steps
         pt = arc(center, radius, cangle0, cangle1, t, not convergent)
@@ -142,7 +142,7 @@ def generate_circular_arc(p0, d0, p1, d1, precision=10):
     
     return curve
 
-def generate_bezier(p0, d0, p1, d1, precision=10):
+def generate_bezier(p0, d0, p1, d1, precision):
     curve = []
     length = (p1 - p0).length / 2
     steps = 90 // precision
