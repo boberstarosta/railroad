@@ -14,8 +14,8 @@ class Ground:
         app.window.push_handlers(self.on_resize)
 
     def update_vertices(self):
-        tile_width = graphics.tex.ground.width * 8
-        tile_height = graphics.tex.ground.height * 8
+        tile_width = graphics.tex.ground.width * 12
+        tile_height = graphics.tex.ground.height * 12
 
         x = int(self.app.camera.position.x // tile_width)
         y = int(self.app.camera.position.y // tile_height)
