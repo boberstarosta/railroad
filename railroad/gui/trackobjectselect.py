@@ -1,7 +1,5 @@
 
-import pyglet
 from pyglet.window import key
-from .. import graphics
 from ..network.signal import Signal
 from ..network.distantsignal import DistantSignal
 from ..network.opentrackmarker import OpenTrackMarker
@@ -22,3 +20,6 @@ class TrackObjectSelect(RadioGroup):
     def on_index_changed(self, value):
         self.gui.app.mode.track_object_class = self.object_data[value][1]
 
+    @property
+    def selected_class(self):
+        return self.object_data[self.index][1]

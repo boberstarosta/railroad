@@ -1,8 +1,5 @@
 
-import pyglet
 from pyglet.window import key
-from .. import graphics
-from .. import geometry
 from ..modes import *
 from .radiogroup import RadioGroup
 
@@ -20,6 +17,7 @@ class ModeSelect(RadioGroup):
             (key.J, SwitchJunctionMode),
             (key.K, AddTrackObjectMode),
             (key.R, RotateTrackObjectMode),
+            (key.L, RemoveTrackObjectMode),
         ]
         data = [(k, mc.name) for k, mc in self.mode_data]
         super().__init__(gui, data, align_x, align_y, padding)
