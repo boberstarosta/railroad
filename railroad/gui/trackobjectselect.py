@@ -2,6 +2,7 @@
 from pyglet.window import key
 from ..network.signal import Signal
 from ..network.distantsignal import DistantSignal
+from ..network.blocksignal import BlockSignal
 from ..network.opentrackmarker import OpenTrackMarker
 from .radiogroup import RadioGroup
 
@@ -12,6 +13,7 @@ class TrackObjectSelect(RadioGroup):
         self.object_data = [
             (key.S, Signal),
             (key.N, DistantSignal),
+            (key.C, BlockSignal),
             (key.O, OpenTrackMarker),
         ]
         data = [(k, oc.__name__) for k, oc in self.object_data]

@@ -8,6 +8,7 @@ class img:
     arrow_blue    = pyglet.resource.image("data/arrow blue.png")
     signal        = pyglet.resource.image("data/signal.png")
     distant_signal= pyglet.resource.image("data/distant.png")
+    block_signal  = pyglet.resource.image("data/block.png")
     corona_green  = pyglet.resource.image("data/corona green.png")
     corona_orange = pyglet.resource.image("data/corona orange.png")
     corona_red    = pyglet.resource.image("data/corona red.png")

@@ -23,16 +23,16 @@ class TrackSegment(BaseEdge):
             self.track_objects[-1].delete()
     
     @staticmethod
-    def _is_valid_signal(to, to_class, rotated, min_t, max_t, exclude):
+    def _is_valid_signal(to, to_classes, rotated, min_t, max_t, exclude):
         return (
-            isinstance(to, to_class)
+            type(to) in to_classes
             and to.rotated == rotated
             and (min_t is None or to.t >= min_t)
             and (max_t is None or to.t <= max_t)
             and to not in exclude
         )
     
-    def nearest_track_object(self, to_class, node, min_t=None, max_t=None, exclude=None):
+    def nearest_track_object(self, node, *to_classes, min_t=None, max_t=None, exclude=None):
         if exclude is None:
             exclude = []
         if node is self.nodes[0]:
@@ -41,7 +41,7 @@ class TrackSegment(BaseEdge):
             rotated = True
         else:
             raise ValueError("TrackSegment.nearest_signal:  Not my node.")
-        valid_objects = [to for to in self.track_objects if self._is_valid_signal(to, to_class, rotated, min_t, max_t, exclude)]
+        valid_objects = [to for to in self.track_objects if self._is_valid_signal(to, to_classes, rotated, min_t, max_t, exclude)]
         if len(valid_objects) > 0:
             valid_objects.sort(key=lambda to: to.t, reverse=rotated)
             return valid_objects[0]
