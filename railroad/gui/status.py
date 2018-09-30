@@ -7,7 +7,7 @@ class Status:
     def __init__(self, gui):
         self.gui = gui
         self.label = pyglet.text.Label(
-            "", font_size=11, bold=False, color=(255, 255, 255, 100),
+            "", font_size=11, bold=False, color=(255, 255, 255, 127),
             x=10, y=self.gui.app.window.height - 10,
             width=gui.app.window.width//4,
             anchor_x="left", anchor_y="top", align="left", multiline=True,
