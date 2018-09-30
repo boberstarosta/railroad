@@ -19,6 +19,7 @@ class TrackObjectSelect(RadioGroup):
     
     def on_index_changed(self, value):
         self.gui.app.mode.track_object_class = self.object_data[value][1]
+        self.gui.show_notification("Track object: {}".format(self.selected_class.__name__))
 
     @property
     def selected_class(self):
