@@ -5,12 +5,13 @@ from .camera import Camera
 from .ground import Ground
 from .gui.gui import Gui
 from .network.network import Network
+from .modes import AddTrackMode
 
 
 class App:
     
     def __init__(self, width=1500, height=800):
-        self.window = pyglet.window.Window(caption = "railroad", width=width, height=height, resizable=True)
+        self.window = pyglet.window.Window(caption="railroad", width=width, height=height, resizable=True)
         self.window.set_minimum_size(800, 600)
         self.window.push_handlers(self)
         self.batch = pyglet.graphics.Batch()
@@ -18,7 +19,7 @@ class App:
         self.ground = Ground(self)
         self.network = Network(self)
         self.gui = Gui(self)
-        self.mode = None
+        self.mode = AddTrackMode(self)
         pyglet.clock.schedule_interval(self.camera.update, 1/60)
         pyglet.clock.schedule_interval(self.network.update, 1/20)
         pyglet.clock.schedule_interval(self.gui.update, 1/60)
