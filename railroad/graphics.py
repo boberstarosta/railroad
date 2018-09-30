@@ -1,6 +1,13 @@
 from pyglet.gl import *
 
 
+class EnableBlendGroup(pyglet.graphics.Group):
+
+    def set_state(self):
+        glEnable(GL_BLEND)
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+
+
 class img:
     node          = pyglet.resource.image("data/node.png")
     arrow_green   = pyglet.resource.image("data/arrow green.png")
@@ -35,8 +42,8 @@ class tex:
 class group:
     ground  = pyglet.graphics.TextureGroup(tex.ground, parent=pyglet.graphics.OrderedGroup(0))
 
-    ballast = pyglet.graphics.TextureGroup(tex.ballast, parent=pyglet.graphics.OrderedGroup(1))
-    rails   = pyglet.graphics.TextureGroup(tex.rails, parent=pyglet.graphics.OrderedGroup(2))
+    ballast = pyglet.graphics.TextureGroup(tex.ballast, parent=EnableBlendGroup(parent=pyglet.graphics.OrderedGroup(1)))
+    rails   = pyglet.graphics.TextureGroup(tex.rails, parent=EnableBlendGroup(parent=pyglet.graphics.OrderedGroup(2)))
 
     node    = pyglet.graphics.OrderedGroup(3)
     arrow   = pyglet.graphics.OrderedGroup(4)
