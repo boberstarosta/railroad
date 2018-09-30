@@ -18,7 +18,7 @@ class ModeSelect(RadioGroup):
             (key.X, RemoveNodeMode),
             (key.B, StraightenTrackMode),
             (key.J, SwitchJunctionMode),
-            (key.O, AddTrackObjectMode),
+            (key.K, AddTrackObjectMode),
             (key.R, RotateTrackObjectMode),
         ]
         data = [(k, mc.name) for k, mc in self.mode_data]
