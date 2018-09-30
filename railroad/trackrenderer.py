@@ -91,12 +91,12 @@ class TrackRenderer:
 
             vertices.extend(((GLfloat*2)(*r1), (GLfloat*2)(*l1), (GLfloat*2)(*l2), (GLfloat*2)(*r2)))
 
-            tx = length / self.WIDTH
+            tw = length / self.WIDTH
             tex_coords.extend((
                 (GLfloat*2)(0, 0),
                 (GLfloat*2)(0, 1),
-                (GLfloat*2)(tx, 1),
-                (GLfloat*2)(tx, 0)
+                (GLfloat*2)(tw, 1),
+                (GLfloat*2)(tw, 0)
             ))
 
         self.vertices = vertices
