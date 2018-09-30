@@ -3,8 +3,8 @@ import pyglet
 from pyglet.gl import *
 from .camera import Camera
 from .gui.gui import Gui
-from .modes import *
 from .network.network import Network
+from .trackrenderer import TrackRenderer
 
 
 class App:
@@ -60,6 +60,7 @@ class App:
         glClearColor(0.10, 0.30, 0.05, 1.0)
         self.window.clear()
         self.camera.apply_world_projection()
+        TrackRenderer.draw()
         self.batch.draw()
         self.camera.apply_gui_projection()
         self.gui.draw()

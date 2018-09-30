@@ -72,6 +72,11 @@ class Node(BaseNode):
             other_node = edge.other_node(self)
             for other_edge in other_node.other_edges(edge):
                 other_edge.update_track()
+        for edge in self._edges:
+            edge.renderer.update_track()
+            other_node = edge.other_node(self)
+            for other_edge in other_node.other_edges(edge):
+                other_edge.renderer.update_track()
         self.track_node.position = position
         self.update_arrow_sprite()
         for node in self.nodes:

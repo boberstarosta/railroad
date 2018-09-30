@@ -46,8 +46,6 @@ def farthest_point(pos, points):
             farthest = index
     return farthest
 
-
-# noinspection PyChainedComparisons
 def point_in_rect(point, x, y, w, h):
     return point[0] >= x and point[1] >= y and point[0] < x + w and point[1] < y + h
 

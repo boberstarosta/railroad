@@ -1,15 +1,12 @@
 
-import pyglet
-
 from .baseedge import BaseEdge
 from .tracknode import TrackNode
 from .tracksegment import TrackSegment
 from .. import geometry
+from ..trackrenderer import TrackRenderer
 
 
 class Edge(BaseEdge):
-    
-    arrow_image = pyglet.resource.image("data/arrow red.png")
     
     def __init__(self, network, node1, node2, straight=False):
         self._straight = straight
@@ -17,19 +14,26 @@ class Edge(BaseEdge):
         
         self.network = network        
         self.track_nodes = []
-        self.track_segments = []        
+        self.track_segments = []
+        self.renderer = TrackRenderer(self)
         self.update_track()
+        self.renderer.update_track()
         self.network.edges.append(self)
 
         # Update track for all connected edges
         for node in self.nodes:
+            # First update the actual track
             for other_edge in node.other_edges(self):
                 other_edge.update_track()
+            # Only then update renderer to include changes in common nodes
+            for other_edge in node.other_edges(self):
+                other_edge.renderer.update_track()
 
     def delete(self):
         super().delete()
         self.network.edges.remove(self)
         self._delete_track()
+        self.renderer.delete()
 
     def _delete_track(self):
         for track_node in self.track_nodes:
@@ -39,30 +43,28 @@ class Edge(BaseEdge):
         for track_segment in self.track_segments:
             track_segment.delete()
         self.track_segments = []
+        self.renderer.clear()
     
     def _create_track(self, points):
         self.track_nodes = [TrackNode(self.network, None, p) for p in points]
         tns = [self.nodes[0].track_node] + self.track_nodes + [self.nodes[1].track_node]
         self.track_segments = [TrackSegment(self.network, self, tns[i], tns[i+1]) for i in range(len(tns) - 1)]
-        for track_segment in self.track_segments:
-            track_segment.update_vertex_list()
-    
+
     def _directions(self):
-        
         this_dirs = []
         result = []
         for i in range(2):
-            this_dirs.append( (self.nodes[(i+1)%2].position - self.nodes[i].position).normalized )
+            this_dirs.append((self.nodes[(i+1)%2].position - self.nodes[i].position).normalized)
             other_edge = self.nodes[i].other_edge(self)
             if other_edge is None:
-                result.append( this_dirs[i] )
+                result.append(this_dirs[i])
             elif other_edge.straight:
                 other_node = other_edge.other_node(self.nodes[i])
-                result.append( (self.nodes[i].position - other_node.position).normalized )
+                result.append((self.nodes[i].position - other_node.position).normalized)
             else:
                 other_node = other_edge.other_node(self.nodes[i])
                 other_dir = (other_node.position - self.nodes[i].position).normalized
-                result.append( (this_dirs[i] - other_dir).normalized )
+                result.append((this_dirs[i] - other_dir).normalized)
         
         return result
     
@@ -78,13 +80,14 @@ class Edge(BaseEdge):
             points = geometry.generate_curve(
                 self.nodes[0].position, directions[0],
                 self.nodes[1].position, directions[1],
-                precision=10)
+                precision=5)
         
         self._create_track(points)
     
     @property
     def straight(self):
         return self._straight
+
     @straight.setter
     def straight(self, value):
         if value != self._straight:
@@ -93,8 +96,7 @@ class Edge(BaseEdge):
             for node in self.nodes:
                 for other_edge in node.other_edges(self):
                     other_edge.update_track()
-
-
-Edge.arrow_image.anchor_x = Edge.arrow_image.width//2
-Edge.arrow_image.anchor_y = Edge.arrow_image.height//2
-
+            self.renderer.update_track()
+            for node in self.nodes:
+                for other_edge in node.other_edges(self):
+                    other_edge.renderer.update_track()
