@@ -73,7 +73,6 @@ class RadioGroup:
         sprite_x = self._calculate_sprite_x(width)
         label_x = sprite_x + graphics.img.gui_radio.width/2
         row_y = self._calculate_row_y(height)
-        print(height, self.height, row_y)
         for i, (sprite, label) in enumerate(zip(self.sprites, self.labels)):
             sprite.x = sprite_x
             label.x = label_x

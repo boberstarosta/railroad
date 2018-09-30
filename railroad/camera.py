@@ -3,7 +3,7 @@ from pyglet.gl import *
 from .vec import Vec
 
 
-class Camera:
+class Camera(pyglet.event.EventDispatcher):
     
     def __init__(self, window, position=Vec(0,0), zoom_index=7,
                  zoom_levels=None, zoom_move_time=0.5):
@@ -12,7 +12,7 @@ class Camera:
             zoom_levels = [1/i**factor for i in range(10, 0, -1)]
         self.window = window
 
-        self.position = position
+        self._position = position
         self.position_from = self.position
         self.position_to = self.position
         self.timer = 0.0
@@ -24,9 +24,29 @@ class Camera:
         self.zoom_timer = 0.0
         self.zoom_tween_time = 0.0
         self.zoom_levels = zoom_levels
-        self.zoom = self.zoom_levels[zoom_index]
+        self._zoom = self.zoom_levels[zoom_index]
         self.zoom_move_time = zoom_move_time
-    
+
+    @property
+    def position(self):
+        return self._position
+
+    @position.setter
+    def position(self, value):
+        if value != self._position:
+            self._position = value
+            self.dispatch_event("on_camera_changed", self.position, self.zoom)
+
+    @property
+    def zoom(self):
+        return self._zoom
+
+    @zoom.setter
+    def zoom(self, value):
+        if value != self._zoom:
+            self._zoom = value
+            self.dispatch_event("on_camera_changed", self.position, self.zoom)
+
     def update(self, dt):
         if self.timer < self.tween_time:
             self.timer += dt
@@ -104,3 +124,5 @@ class Camera:
         glMatrixMode(GL_MODELVIEW)
         glLoadIdentity()
 
+
+Camera.register_event_type("on_camera_changed")

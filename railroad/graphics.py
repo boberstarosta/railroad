@@ -26,7 +26,13 @@ for attr in [getattr(img, i) for i in dir(img)]:
         attr.anchor_y = attr.height / 2
 
 
+class tex:
+    ground = pyglet.resource.texture("data/ground.jpg")
+
+
 class group:
+    ground  = pyglet.graphics.TextureGroup(tex.ground, parent=pyglet.graphics.OrderedGroup(0))
+
     node    = pyglet.graphics.OrderedGroup(3)
     arrow   = pyglet.graphics.OrderedGroup(4)
     signal  = pyglet.graphics.OrderedGroup(5)

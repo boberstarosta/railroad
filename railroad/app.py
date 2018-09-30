@@ -2,6 +2,7 @@
 import pyglet
 from pyglet.gl import *
 from .camera import Camera
+from .ground import Ground
 from .gui.gui import Gui
 from .network.network import Network
 from .trackrenderer import TrackRenderer
@@ -15,6 +16,7 @@ class App:
         self.window.push_handlers(self)
         self.batch = pyglet.graphics.Batch()
         self.camera = Camera(self.window)
+        self.ground = Ground(self)
         self.network = Network(self)
         self.gui = Gui(self)
         self.fps_display = pyglet.window.FPSDisplay(self.window)
