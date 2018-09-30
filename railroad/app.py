@@ -5,6 +5,7 @@ from .camera import Camera
 from .ground import Ground
 from .gui.gui import Gui
 from .network.network import Network
+from .network.io import save_network, load_network
 from .modes import AddTrackMode
 
 
@@ -35,6 +36,13 @@ class App:
     def on_key_press(self, symbol, modifiers):
         if symbol == pyglet.window.key.O and modifiers & pyglet.window.key.MOD_SHIFT:
             self.network.show_nodes = not self.network.show_nodes
+        save_file = "test.save"
+        if symbol == pyglet.window.key.S and modifiers & pyglet.window.key.MOD_CTRL:
+            save_network(self.network, save_file)
+            self.gui.show_notification("Saved network to {}".format(save_file))
+        if symbol == pyglet.window.key.L and modifiers & pyglet.window.key.MOD_CTRL:
+            load_network(self.network, save_file)
+            self.gui.show_notification("Loaded network from {}".format(save_file))
         self.mode.on_key_press(symbol, modifiers)
 
     def on_mouse_motion(self, x, y, dx, dy):
