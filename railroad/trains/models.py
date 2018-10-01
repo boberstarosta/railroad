@@ -12,18 +12,20 @@ class BaseModel:
     has_engine = False
 
     @classmethod
-    def create_sprite(cls):
+    def create_sprite(cls, batch):
         sprite = pyglet.sprite.Sprite(
-            graphics.img.traincar_bulk,
+            cls.image,
+            batch=batch,
             group=graphics.group.trains
         )
-        sprite.scale_x = cls.width / cls.image.width
+        sprite.scale_x = cls.length / cls.image.width
+        sprite.scale_y = cls.width / cls.image.height
         return sprite
 
 
 class LocoHeavy(BaseModel):
 
-    image = graphics.img.traincar_bulk
+    image = graphics.img.loco_heavy
     length = 1755.0
     width  = 295.0
     mass = 116500.0

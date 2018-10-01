@@ -6,6 +6,7 @@ from .ground import Ground
 from .gui.gui import Gui
 from .network.network import Network
 from .network.io import save_network, load_network
+from .trains import Trains
 from .modes import AddTrackMode
 
 
@@ -19,10 +20,12 @@ class App:
         self.camera = Camera(self.window)
         self.ground = Ground(self)
         self.network = Network(self)
+        self.trains = Trains(self.network)
         self.gui = Gui(self)
         self.mode = AddTrackMode(self)
         pyglet.clock.schedule_interval(self.camera.update, 1/60)
         pyglet.clock.schedule_interval(self.network.update, 1/20)
+        pyglet.clock.schedule_interval(self.trains.update, 1/60)
         pyglet.clock.schedule_interval(self.gui.update, 1/60)
 
     def change_mode(self, mode_class):
