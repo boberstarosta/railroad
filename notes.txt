@@ -1,43 +1,56 @@
 
-given: A, B, a, b, c, d
+Locomotive (light):
+    total length:   14.2 m
+        body:           13.0 m
+        bumpers:         1.2 m
+    total width:     3.17 m
 
-A - point on line 1
-B - point on line 2
-a - direction vector for line 1
-b - direction vector for line 2
-c - perpendicular direction from A towards line 2
-d - perpendicular direction from B towards line 1
+    width / height: 22.3 %
 
-find: C, D, r
 
-known relationships:
-|AC| = |BD| = r
-2r = 2|AC| = 2|BD| = |CD|
+Locomotive (heavy):
+    total length:   17.55 m
+        body:           14.7 m
+        bumpers:         1.2 m
+    total width:     2.95 m
+    total height:    4.5 m
 
-C = A + rc
-D = B + rd
+    width / length: 16.8 %
 
-4r^2 = (Dx-Cx)^2 + (Dy-Cy)^2
 
-Cx = Ax + rcx
-Cy = Ay + rcy
-Dx = Bx + rdx
-Dy = By + rdy
+Tanker car:
+    total length:   12.6 m
+        body:           11.4 m
+        bumpers:         1.2 m
+    total width:     3.0 m
+    total height:    4.3 m
 
-insert this for Cx, Cy, Dx, Dy:
+    width / length: 23.8 %
 
-4r^2 = (Bx + rdx - Ax - rcx)^2 + (By + rdy - Ay - rcy)^2
 
-solve for r, r > 0
+Bulk cargo car:
+    total length:   14.0 m
+        body:           12.4 m
+        bumpers:         1.6 m
+    total width:     3.0 m
+    total height:    3.3 m
 
-4r^2 = [r(dx - cx) + (Bx - Ax)]^2 + [r(dy - cy) + (By - Ay)]^2
-4r^2 = r^2 (dx-cx)^2 + 2 (dx-cx) (Bx-Ax) r + (Bx-Ax)^2 + r^2 (dy-cy)^2 + 2 (dy-cy) (By-Ay) r + (By-Ay)^2
-4r^2 - (dx-cx)^2 r^2 - (dy-cy)^2 r^2 - 2 (dx-cx)(Bx-Ax) r - 2 (dy-cy)(By-Ay) r - (Bx-Ax)^2 - (By-Ay)^2 = 0
-[4 - (dx-cx)^2 - (dy-cy)^2] r^2 + [-2(dx-cx)(Bx-Ax) - 2(dy-cy)(By-Ay)] r + [-(Bx-Ax)^2 - (By-Ay)^2] = 0
-m = 4 - (dx-cx)^2 - (dy-cy)^2
-n = -2(dx-cx)(Bx-Ax) - 2(dy-cy)(By-Ay)
-l = -(Bx-Ax)^2 - (By-Ay)^2
-m r^2 + n r + l = 0
+    width / length: 21.4 %
 
-r = -n +-sq(n^2 - 4ml) / 2m
-r = 
+
+General cargo car:
+    total length:   18.7 m
+        body:       17.5 m
+        bumpers:     1.2 m
+    total width:     3.17 m
+    total height:    4.5 m
+
+    width / height: 17.0 %
+
+
+Passenger car:
+    total length:   24.5 m
+    total width:     2.9 m
+    total height:    4.2 m
+
+    width / length: 11.8 %
