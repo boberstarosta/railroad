@@ -10,7 +10,7 @@ class AddTrainCarMode(BaseMode):
 
     def __init__(self, app):
         super().__init__(app)
-        self.traincar_model = TestModel
+        self.traincar_model = TrainCarBulk
 
     def on_mouse_press(self, x, y, buttons, modifiers):
         if buttons & pyglet.window.mouse.LEFT:
