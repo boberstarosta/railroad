@@ -10,3 +10,4 @@ from .addtrackobjectmode import AddTrackObjectMode
 from .rotatetrackobjectmode import RotateTrackObjectMode
 from .movetrackobjectmode import MoveTrackObjectMode
 from .removetrackobjectmode import RemoveTrackObjectMode
+from .addsceneryobjectmode import AddSceneryObjectMode

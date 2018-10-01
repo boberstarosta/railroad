@@ -21,6 +21,8 @@ class img:
     corona_red    = pyglet.resource.image("data/corona red.png")
     corona_white  = pyglet.resource.image("data/corona white.png")
 
+    tree          = pyglet.resource.image("data/tree.png")
+
     gui_frame_top    = pyglet.resource.image("data/gui/frame top.png")
     gui_frame_middle = pyglet.resource.image("data/gui/frame mid.png")
     gui_radio        = pyglet.resource.image("data/gui/radio.png")
@@ -45,11 +47,14 @@ class group:
     ballast = pyglet.graphics.TextureGroup(tex.ballast, parent=EnableBlendGroup(parent=pyglet.graphics.OrderedGroup(1)))
     rails   = pyglet.graphics.TextureGroup(tex.rails, parent=EnableBlendGroup(parent=pyglet.graphics.OrderedGroup(2)))
 
-    node    = pyglet.graphics.OrderedGroup(3)
-    arrow   = pyglet.graphics.OrderedGroup(4)
-    signal  = pyglet.graphics.OrderedGroup(5)
-    corona  = pyglet.graphics.OrderedGroup(6)
+    signal  = pyglet.graphics.OrderedGroup(10)
+    corona  = pyglet.graphics.OrderedGroup(11)
 
-    gui_back  = pyglet.graphics.OrderedGroup(12)
-    gui_mid = pyglet.graphics.OrderedGroup(13)
-    gui_front = pyglet.graphics.OrderedGroup(14)
+    top     = pyglet.graphics.OrderedGroup(20)
+
+    node    = pyglet.graphics.OrderedGroup(30)
+    arrow   = pyglet.graphics.OrderedGroup(31)
+
+    gui_back  = pyglet.graphics.OrderedGroup(40)
+    gui_mid = pyglet.graphics.OrderedGroup(41)
+    gui_front = pyglet.graphics.OrderedGroup(42)

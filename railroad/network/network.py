@@ -11,11 +11,13 @@ class Network:
         self.track_nodes = []
         self.track_segments = []
         self.track_objects = []
+        self.scenery_objects = []
         self._show_nodes = True
     
     def update(self, dt):
-        for node in self.nodes:
-            node.sprite.rotation -= dt * 90.0
+        if self.show_nodes:
+            for node in self.nodes:
+                node.sprite.rotation -= dt * 90.0
         for to in self.track_objects:
             to.update(dt)
     
@@ -25,7 +27,7 @@ class Network:
         max_distance_sq = max_distance**2
         nearest_node = None
         shortest_distance_sq = float("inf")
-        for node in [n for n in self.nodes if not n in excluded]:
+        for node in [n for n in self.nodes if n not in excluded]:
             distance_sq = (node.position - position).length_sq
             if distance_sq < shortest_distance_sq and distance_sq <= max_distance_sq:
                 nearest_node = node
@@ -56,7 +58,20 @@ class Network:
                 nearest_to = to
                 shortest_distance = distance
         return nearest_to
-    
+
+    def get_nearest_scenery_object(self, position, excluded=None, max_distance=40):
+        if excluded is None:
+            excluded = []
+        max_distance_sq = max_distance**2
+        nearest_so = None
+        shortest_distance_sq = float("inf")
+        for so in [o for o in self.scenery_objects if o not in excluded]:
+            distance_sq = (so.position - position).length_sq
+            if distance_sq < shortest_distance_sq and distance_sq <= max_distance_sq:
+                nearest_so = so
+                shortest_distance_sq = distance_sq
+        return nearest_so
+
     @property
     def signals(self):
         return [to for to in self.track_objects if isinstance(to, Signal)]
@@ -64,6 +79,7 @@ class Network:
     @property
     def show_nodes(self):
         return self._show_nodes
+    
     @show_nodes.setter
     def show_nodes(self, value):
         if value != self._show_nodes:
