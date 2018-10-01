@@ -6,6 +6,7 @@ from .signal import Signal
 from .blocksignal import BlockSignal
 from .distantsignal import DistantSignal
 from .opentrackmarker import OpenTrackMarker
+from .sceneryobject import SceneryObject
 
 
 str_to_type = {
@@ -42,6 +43,12 @@ def save_network(network, filename):
         rotated = str(to.rotated)
         lines.append("|".join((symbol, type_, parent_edge, parent_segment_index, t, rotated)))
 
+    for so in network.scenery_objects:
+        symbol = "SO"
+        pos = "{},{}".format(so.position.x, so.position.y)
+        rotation = str(so.rotation)
+        lines.append("|".join((symbol, pos, rotation)))
+
     with open(filename, mode="w") as f:
         f.write("\n".join(lines))
 
@@ -50,10 +57,13 @@ def load_network(network, filename):
         network.edges[-1].delete()
     while len(network.nodes) > 0:
         network.nodes[-1].delete()
+    while len(network.scenery_objects) > 0:
+        network.scenery_objects[-1].delete()
 
     node_records = []
     edge_records = []
     to_records = []
+    so_records = []
     nodes_to_switch = []
 
     with open(filename, mode="r") as f:
@@ -66,6 +76,8 @@ def load_network(network, filename):
                 edge_records.append(data)
             elif symbol == "TO":
                 to_records.append(data)
+            elif symbol == "SO":
+                so_records.append(data)
 
     for str_pos, str_switched in node_records:
         pos = Vec([float(s) for s in str_pos.split(",")])
@@ -87,6 +99,11 @@ def load_network(network, filename):
         t = float(s_t)
         rotated = s_rot == "True"
         type_(network, parent_segment, t, rotated=rotated)
+
+    for s_position, s_rotation in so_records:
+        position = Vec([float(s) for s in s_position.split(",")])
+        rotation = float(s_rotation)
+        SceneryObject(network, position, rotation)
 
     for node in nodes_to_switch:
         node.switch()
