@@ -75,6 +75,10 @@ class Edge(BaseEdge):
         return result
     
     def update_track(self):
+        if self.straight and len(self.track_segments) == 1:
+            # There is no need to change track
+            return
+
         self._delete_track()
         
         connected_edges = [n.other_edge(self) for n in self.nodes if n.other_edge is not None]
