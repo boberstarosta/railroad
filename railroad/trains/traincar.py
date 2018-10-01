@@ -31,7 +31,6 @@ class TrainCar:
 
         if 0 < new_t < 1:
             # My segment is long enough
-            print("My segment", distance, backwards, new_t, id(self.segment))
             return self.segment, new_t
         else:
             # My segment is too short, start going further along the track
@@ -50,13 +49,11 @@ class TrainCar:
                     good_params = [p for p in params if 0 < p < 1]
                     if len(good_params) == 1:
                         # One param is within current_segment
-                        print("1 param :", distance, backwards, good_params, id(current_segment))
                         return current_segment, good_params[0]
                     elif len(good_params) == 2:
                         # Two params are within current_segment
                         # Choose the param further from next_node (closer to my segment)
                         t = max(good_params) if next_node is current_segment.nodes[0] else min(good_params)
-                        print("2 params:", distance, backwards, good_params, id(current_segment))
                         return current_segment, t
                     else:
                         # Both ends of current_segment are too close, continue to the next segment
@@ -66,7 +63,6 @@ class TrainCar:
 
             # Reached end of the line and still too close.
             # TODO: Do something if no point found
-            print("End of line", distance, backwards)
             return self.segment, new_t
 
     def _get_wheel_points(self):
@@ -80,7 +76,6 @@ class TrainCar:
         return segment.nodes[0].position + vector * t
 
     def _update_sprite(self):
-        print("=== Updating ===")
         wheel0, wheel1 = self._get_wheel_points()
         self.sprite.position = (wheel0 + wheel1) / 2
         self.sprite.rotation = -(wheel1 - wheel0).angle
