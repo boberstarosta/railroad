@@ -23,6 +23,7 @@ class img:
 
     loco_heavy    = pyglet.resource.image("data/trains/loco heavy.png")
     traincar_bulk = pyglet.resource.image("data/trains/traincar bulk.png")
+    traincar_test = pyglet.resource.image("data/trains/traincar test.png")
 
     tree          = pyglet.resource.image("data/tree.png")
 

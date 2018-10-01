@@ -10,14 +10,14 @@ def t_from_distance(p: Vec, s: Vec, u: Vec, d: float) -> tuple:
     :param s: start of line
     :param u: direction vector of line
     :param d: distance
-    :return: tuple containing parameter 't' for line 's + t*u', where distance to point 'p' is 'd'
+    :return: tuple containing from 0 to 2 solutions
     """
 
-    a = -(u.x + u.y)
+    a = u.x**2 + u.y**2
     if a == 0:
         raise ValueError("Direction vector u can't be zero!")
-    b = 2*(p.x * u.x + p.y * u.y - s.x * u.x - s.y * u.y)
-    c = d ** 2 - p.x ** 2 - p.y ** 2 - s.x ** 2 - s.y ** 2 + 2 * (p.x * s.x - p.y * s.y)
+    b = 2*s.x*u.x - 2*p.x*u.x + 2*s.y*u.y - 2*p.y*u.y
+    c = s.x**2 - 2*p.x*s.x + p.x**2 + s.y**2 - 2*p.y*s.y + p.y**2 - d**2
 
     # Solve quadratic equation a*x**2 + b*x + c = 0 using the quadratic formula
     discriminant = b**2 - 4*a*c
@@ -26,11 +26,11 @@ def t_from_distance(p: Vec, s: Vec, u: Vec, d: float) -> tuple:
         return tuple()
     elif discriminant == 0:
         # There is only one solution
-        return tuple((-b + math.sqrt(discriminant)) / 2*a)
+        return tuple([(-b + math.sqrt(discriminant)) / (2*a)])
     else:
         # There are two solutions
-        solution_a = (-b + math.sqrt(discriminant)) / 2*a
-        solution_b = (-b - math.sqrt(discriminant)) / 2*a
+        solution_a = (-b + math.sqrt(discriminant)) / (2*a)
+        solution_b = (-b - math.sqrt(discriminant)) / (2*a)
         return solution_a, solution_b
 
 def nearest_t_on_line(pos, point1, point2):

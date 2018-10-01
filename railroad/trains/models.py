@@ -24,6 +24,16 @@ class BaseModel:
         return sprite
 
 
+class TestModel(BaseModel):
+
+    image = graphics.img.traincar_test
+    length = 1280.0
+    width  = 320.0
+    wheelbase = 1280.0
+    mass = 100000.0
+    has_engine = False
+
+
 class LocoHeavy(BaseModel):
 
     image = graphics.img.loco_heavy
