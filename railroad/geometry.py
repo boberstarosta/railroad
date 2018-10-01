@@ -4,8 +4,34 @@ import math
 from .vec import Vec
 
 
-def bezier3(p0, p1, p2, p3, t):
-    return p0*(1 - t)**3 + p1*3*(1 - t)**2*t + p2*3*(1 - t)*t**2 + p3*t**3
+def t_from_distance(p: Vec, s: Vec, u: Vec, d: float) -> tuple:
+    """ Find parameter 't' for line 's + t*u', where distance to point 'p' is 'd'
+    :param p: point
+    :param s: start of line
+    :param u: direction vector of line
+    :param d: distance
+    :return: tuple containing parameter 't' for line 's + t*u', where distance to point 'p' is 'd'
+    """
+
+    a = -(u.x + u.y)
+    if a == 0:
+        raise ValueError("Direction vector u can't be zero!")
+    b = 2*(p.x * u.x + p.y * u.y - s.x * u.x - s.y * u.y)
+    c = d ** 2 - p.x ** 2 - p.y ** 2 - s.x ** 2 - s.y ** 2 + 2 * (p.x * s.x - p.y * s.y)
+
+    # Solve quadratic equation a*x**2 + b*x + c = 0 using the quadratic formula
+    discriminant = b**2 - 4*a*c
+    if discriminant < 0:
+        # There is no real solution.
+        return tuple()
+    elif discriminant == 0:
+        # There is only one solution
+        return tuple((-b + math.sqrt(discriminant)) / 2*a)
+    else:
+        # There are two solutions
+        solution_a = (-b + math.sqrt(discriminant)) / 2*a
+        solution_b = (-b - math.sqrt(discriminant)) / 2*a
+        return solution_a, solution_b
 
 def nearest_t_on_line(pos, point1, point2):
     length_sq = (point2 - point1).length_sq
@@ -64,6 +90,9 @@ def angle_difference(a, b, longer=False):
                 b += 360
         
     return b - a
+
+def bezier3(p0, p1, p2, p3, t):
+    return p0*(1 - t)**3 + p1*3*(1 - t)**2*t + p2*3*(1 - t)*t**2 + p3*t**3
 
 def arc(center, radius, a, b, t, longer=False):
     difference = angle_difference(a, b, longer)

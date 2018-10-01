@@ -1,13 +1,13 @@
 
-from ..vec import Vec
+from .. import geometry
 
 
 class TrainCar:
 
-    def __init__(self, trains, model, parent_segment, t, rotated=False, parent_consist=None):
+    def __init__(self, trains, model, segment, t, rotated=False, parent_consist=None):
         self.trains = trains
         self.model = model
-        self.parent_segment = parent_segment
+        self.segment = segment
         self._t = t
         self._rotated = rotated
         self.parent_consist = parent_consist
@@ -45,9 +45,44 @@ class TrainCar:
             next_t = 1.0 if next_backwards else 0.0
             return cls._follow_track(next_segment, next_t, next_distance, next_backwards)
 
+    def _follow_track_dist(self, distance, backwards):
+        my_segment_length = self.segment.length
+        if backwards:
+            distance_to_node = my_segment_length * self.t
+        else:
+            distance_to_node = my_segment_length * (1 - self.t)
+
+        if distance_to_node <= distance:
+            # My segment is long enough
+            delta_t = distance / my_segment_length
+            new_t = self.t - delta_t if backwards else self.t + delta_t
+            return self.segment, new_t
+        else:
+            # My segment is too short, start going further along the track
+            my_position = self._position_from_t(self.segment, self.t)
+            next_node = self.segment.nodes[0] if backwards else self.segment.nodes[1]
+            current_segment = next_node.other_segment(self.segment)
+            next_node = self.segment[0] if backwards else self.segment[1]
+            while current_segment is not None:
+                node_distances = [(n.position - my_position).length for n in current_segment.nodes]
+                farthest_distance = max(node_distances)
+                if farthest_distance >= distance:
+                    # Some point on current_segment is distance away from my_position
+                    # TODO: Find a point on <current_segment> whose distance to <my_position> is exactly <distance>
+                    good_params = geometry.t_from_distance()
+                    raise NotImplemented
+                else:
+                    # Both ends of current_segment are too close, continue to the next segment
+                    current_segment = next_node.other_segment(current_segment)
+                    next_node = current_segment.other_node(next_node)
+
+            # Reached end of the line and still too close.
+            # TODO: Do something if no point found
+            raise NotImplemented
+
     def _get_wheel_points(self):
-        segment0, t0 = self._follow_track(self.parent_segment, self.t, self.model.wheelbase/2, backwards=True)
-        segment1, t1 = self._follow_track(self.parent_segment, self.t, self.model.wheelbase/2, backwards=False)
+        segment0, t0 = self._follow_track(self.segment, self.t, self.model.wheelbase / 2, backwards=True)
+        segment1, t1 = self._follow_track(self.segment, self.t, self.model.wheelbase / 2, backwards=False)
         return self._position_from_t(segment0, t0), self._position_from_t(segment1, t1)
 
     @staticmethod
@@ -58,7 +93,7 @@ class TrainCar:
     def _update_sprite(self):
         wheel0, wheel1 = self._get_wheel_points()
         self.sprite.position = (wheel0 + wheel1) / 2
-        self.sprite.rotation = -(self.parent_segment.nodes[1].position - self.parent_segment.nodes[0].position).angle
+        self.sprite.rotation = -(self.segment.nodes[1].position - self.segment.nodes[0].position).angle
 
     @property
     def t(self):
