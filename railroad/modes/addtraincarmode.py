@@ -19,10 +19,8 @@ class AddTrainCarMode(BaseMode):
             if nearest_segment is not None:
                 t = geometry.nearest_t_on_line(mouse, nearest_segment.nodes[0].position,
                                                nearest_segment.nodes[1].position)
-                traincar = TrainCar(
+                TrainCar(
                     self.app.trains,
                     self.traincar_model,
                     nearest_segment, t
                 )
-
-                print(traincar.model)

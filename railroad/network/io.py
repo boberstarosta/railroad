@@ -53,12 +53,19 @@ def save_network(network, filename):
         f.write("\n".join(lines))
 
 def load_network(network, filename):
+    # Clear the network - edges, nodes, track objects
     while len(network.edges) > 0:
         network.edges[-1].delete()
     while len(network.nodes) > 0:
         network.nodes[-1].delete()
     while len(network.scenery_objects) > 0:
         network.scenery_objects[-1].delete()
+
+    # Clear all trains - traincars, consists
+    while len(network.app.trains.traincars) > 0:
+        network.app.trains.traincars[-1].delete()
+    while len(network.app.trains.consists) > 0:
+        network.app.trains.consists[-1].delete()
 
     node_records = []
     edge_records = []
