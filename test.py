@@ -13,13 +13,15 @@ def update(x, y):
 
     draw.clear()
 
-    s = Vec(-550, 0)
-    b = Vec(-200, 50)
-    e = Vec(550, -150)
+    g = Vec(-550, 90)
+    s = Vec(-450, 100)
+    e = Vec(300, -150)
+    f = Vec(400, -250)
 
+    draw.pt(g, color=colors.blue)
     draw.pt(s, color=colors.blue)
-    draw.pt(b, color=colors.blue)
     draw.pt(e, color=colors.blue)
+    draw.pt(f, color=colors.blue)
 
 @window.event
 def on_mouse_drag(x, y, dx, dy, buttons, modifiers):
