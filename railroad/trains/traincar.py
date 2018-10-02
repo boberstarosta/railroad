@@ -10,14 +10,17 @@ class TrainCar:
         self.segment = segment
         self._t = t
         self._rotated = rotated
+        self._position = None
         self.parent_consist = parent_consist
         self.sprite = model.create_sprite(trains.network.app.batch)
         trains.traincars.append(self)
+        segment.traincars.append(self)
         self._update_sprite()
 
     def delete(self):
         self.sprite.delete()
         self.trains.traincars.remove(self)
+        self.segment.traincars.remove(self)
 
     def update(self, dt):
         pass
@@ -77,7 +80,8 @@ class TrainCar:
 
     def _update_sprite(self):
         wheel0, wheel1 = self._get_wheel_points()
-        self.sprite.position = (wheel0 + wheel1) / 2
+        self._position = (wheel0 + wheel1) / 2
+        self.sprite.position = self._position
         self.sprite.rotation = -(wheel1 - wheel0).angle
 
     @property
@@ -89,3 +93,7 @@ class TrainCar:
         if value != self._t:
             self._t = value
             self._update_sprite()
+
+    @property
+    def position(self):
+        return self._position
