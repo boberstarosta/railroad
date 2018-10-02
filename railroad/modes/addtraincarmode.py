@@ -14,7 +14,7 @@ class AddTrainCarMode(BaseMode):
 
     def follow_track_until_traincar(self, segment, t, backwards):
         t_interval = (0, t) if backwards else (t, 1)
-        traincars = [tc for tc in segment.traincars if t_interval[0] < tc < t_interval[1]]
+        traincars = [tc for tc in segment.traincars if t_interval[0] < tc.t < t_interval[1]]
         if len(traincars) > 0:
             return traincars[0]
 
