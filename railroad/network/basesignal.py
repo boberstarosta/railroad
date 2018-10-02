@@ -12,6 +12,7 @@ class BaseSignal(BaseTrackObject):
     corona_start = 32
     corona_spacing = 49.5
     blink_interval = 0.3
+    offset = 200
     
     image = None
     corona_images = []
@@ -49,7 +50,7 @@ class BaseSignal(BaseTrackObject):
         if self.rotated:
             direction = -direction
         perp = Vec(direction.y, -direction.x)
-        position = self.position + direction*self.sprite.height/2 + perp*150
+        position = self.position + direction*self.sprite.height/2 + perp*self.offset
         self.sprite.position = position
         self.sprite.rotation = -direction.angle
         for i, corona in enumerate(self.corona_sprites):
