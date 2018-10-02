@@ -14,7 +14,7 @@ class SceneryObject:
             batch=network.app.batch,
             group=graphics.group.top
         )
-        self.sprite.scale = 400 / self.sprite.image.height  # 400 cm
+        self.sprite.scale = 1000 / self.sprite.image.height  # 400 cm
         self.sprite.rotation = rotation
         network.scenery_objects.append(self)
 
