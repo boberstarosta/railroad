@@ -1,10 +1,5 @@
 
-import pyglet
-
 from .baseedge import BaseEdge
-from .. import graphics
-from ..geometry import intersect_point
-from ..vec import Vec
 
 
 class TrackSegment(BaseEdge):
