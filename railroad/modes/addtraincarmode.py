@@ -12,14 +12,14 @@ class AddTrainCarMode(BaseMode):
         super().__init__(app)
         self.traincar_model = TrainCarBulk
 
-    def follow_track_until_traincar(self, segment, t, distance, backwards):
+    def follow_track_until_traincar(self, segment, t, backwards):
         t_interval = (0, t) if backwards else (t, 1)
-        traincars = [tc for tc in segment if t_interval[0] < tc < t_interval[1]]
+        traincars = [tc for tc in segment.traincars if t_interval[0] < tc < t_interval[1]]
         if len(traincars) > 0:
             return traincars[0]
 
         node = segment.nodes[0] if backwards else segment.nodes[1]
-        current_segment = node.other_edge(segment)
+        current_segment = node.other_segment(segment)
         next_node = None if current_segment is None else current_segment.other_node(node)
 
         while current_segment is not None:
@@ -29,12 +29,13 @@ class AddTrainCarMode(BaseMode):
                     return sorted_traincars[0]
                 else:
                     return sorted_traincars[-1]
-            current_segment = next_node.other_node(current_segment)
-            next_node = current_segment.other_node(next_node)
+            current_segment = next_node.other_segment(current_segment)
+            if current_segment is not None:
+                next_node = current_segment.other_node(next_node)
 
         return None
 
-    def get_nearest_traincar(self, segment, t, max_distance):
+    def get_nearest_traincar(self, segment, t):
         prev_traincar = self.follow_track_until_traincar(segment, t, backwards=True)
         next_traincar = self.follow_track_until_traincar(segment, t, backwards=False)
         traincars = [tc for tc in [prev_traincar, next_traincar] if tc is not None]
