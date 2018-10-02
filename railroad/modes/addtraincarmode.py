@@ -16,7 +16,8 @@ class AddTrainCarMode(BaseMode):
         t_interval = (0, t) if backwards else (t, 1)
         traincars = [tc for tc in segment.traincars if t_interval[0] < tc.t < t_interval[1]]
         if len(traincars) > 0:
-            return traincars[0]
+            sorted_by_delta_t = sorted(traincars, key=lambda tc: abs(t - tc.t))
+            return sorted_by_delta_t[0]
 
         node = segment.nodes[0] if backwards else segment.nodes[1]
         current_segment = node.other_segment(segment)
@@ -44,7 +45,7 @@ class AddTrainCarMode(BaseMode):
             nearest_tc = traincars[0]
         elif len(traincars) >= 2:
             def distance(segment, t, traincar):
-                position = TrainCar._position_from_t(segment, t)
+                position = TrainCar.position_from_t(segment, t)
                 return (traincar.position - position).length
             nearest_tc = min(traincars, key=lambda tc: distance(segment, t, tc))
         return nearest_tc
@@ -57,6 +58,10 @@ class AddTrainCarMode(BaseMode):
                 t = geometry.nearest_t_on_line(mouse, nearest_segment.nodes[0].position,
                                                nearest_segment.nodes[1].position)
                 nearest_tc = self.get_nearest_traincar(nearest_segment, t)
+                if nearest_tc is not None:
+                    distance = (nearest_tc.position - TrainCar.position_from_t(nearest_segment, t)).length
+                    if distance < (nearest_tc.model.length + self.traincar_model.length) / 2:
+                        return
                 TrainCar(
                     self.app.trains,
                     self.traincar_model,

@@ -37,7 +37,7 @@ class TrainCar:
             return self.segment, new_t
         else:
             # My segment is too short, start going further along the track
-            my_position = self._position_from_t(self.segment, self.t)
+            my_position = self.position_from_t(self.segment, self.t)
             next_node = self.segment.nodes[0] if backwards else self.segment.nodes[1]
             current_segment = next_node.other_segment(self.segment)
             if current_segment is not None:
@@ -71,10 +71,10 @@ class TrainCar:
     def _get_wheel_points(self):
         segment0, t0 = self._follow_track_dist(self.model.wheelbase / 2, backwards=True)
         segment1, t1 = self._follow_track_dist(self.model.wheelbase / 2, backwards=False)
-        return self._position_from_t(segment0, t0), self._position_from_t(segment1, t1)
+        return self.position_from_t(segment0, t0), self.position_from_t(segment1, t1)
 
     @staticmethod
-    def _position_from_t(segment, t):
+    def position_from_t(segment, t):
         vector = segment.nodes[1].position - segment.nodes[0].position
         return segment.nodes[0].position + vector * t
 
