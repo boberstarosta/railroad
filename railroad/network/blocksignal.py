@@ -33,7 +33,7 @@ class BlockSignal(BaseSignal):
         setting = "full"
         next_setting = "full"
         track_ahead = TrackAhead(self)
-        if track_ahead.junction_wrong:
+        if track_ahead.junction_wrong or track_ahead.traincar_present:
             setting = "stop"
         else:
             if track_ahead.next_signal is None:

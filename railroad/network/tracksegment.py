@@ -22,6 +22,8 @@ class TrackSegment(BaseEdge):
         self.network.track_segments.remove(self)
         while len(self.track_objects) > 0:
             self.track_objects[-1].delete()
+        while len(self.traincars) > 0:
+            self.traincars[-1].delete()
     
     @staticmethod
     def _is_valid_signal(to, to_classes, rotated, min_t, max_t, exclude):

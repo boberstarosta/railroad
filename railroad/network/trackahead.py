@@ -11,6 +11,7 @@ class TrackAhead:
         self.junction_wrong = False
         self.junction_turn = False
         self.open_track = False
+        self.traincar_present = False
 
         checked_segments = []
 
@@ -19,15 +20,20 @@ class TrackAhead:
         current_segment = caller.parent_segment
 
         if caller.rotated:
-            min_t = None
+            min_t = 0.0
             max_t = caller.t
         else:
             min_t = caller.t
-            max_t = None
+            max_t = 1.0
         exclude = [caller]
 
         while self.next_signal is None and current_segment is not None and \
                 current_segment not in checked_segments:
+
+            # Check for train cars
+            if True in [min_t <= tc.t <= max_t for tc in current_segment.traincars]:
+                self.traincar_present = True
+
 
             nearest_open_track = current_segment.nearest_track_object(node, OpenTrackMarker, min_t=min_t, max_t=max_t)
             if nearest_open_track is not None:
@@ -61,6 +67,6 @@ class TrackAhead:
             node = current_segment.other_node(node)
             current_segment = node.other_segment(current_segment)
             # Only needed for self.parent_segment, no longer needed now
-            min_t = None
-            max_t = None
+            min_t = 0.0
+            max_t = 1.0
             exclude = []

@@ -29,7 +29,7 @@ class Signal(BaseSignal):
         setting = "stop"
         next_setting = "stop"
         track_ahead = TrackAhead(self)
-        if not track_ahead.junction_wrong:  # If junction_wrong, leave default stop stop
+        if not track_ahead.junction_wrong and not track_ahead.traincar_present:
             if track_ahead.junction_turn:
                 setting = "40"
             else:
