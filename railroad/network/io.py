@@ -90,6 +90,7 @@ def load_network(network, filename):
         pos = Vec([float(s) for s in str_pos.split(",")])
         switched = str_switched == "True"
         node = Node(network, pos)
+        node.sprite.visible = network.show_nodes
         if switched:
             nodes_to_switch.append(node)
 
