@@ -2,9 +2,9 @@
 from ..vec import Vec
 from .node import Node
 from .edge import Edge
-from .signal import Signal
-from .blocksignal import BlockSignal
-from .distantsignal import DistantSignal
+from railroad.network.signals.signal import Signal
+from railroad.network.signals.blocksignal import BlockSignal
+from railroad.network.signals.distantsignal import DistantSignal
 from .opentrackmarker import OpenTrackMarker
 from .sceneryobject import SceneryObject
 

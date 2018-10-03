@@ -1,11 +1,11 @@
 
-from .opentrackmarker import OpenTrackMarker
+from railroad.network.opentrackmarker import OpenTrackMarker
 
 
 class TrackAhead:
     def __init__(self, caller):
-        from .signal import Signal
-        from .blocksignal import BlockSignal
+        from railroad.network.signals.signal import Signal
+        from railroad.network.signals.blocksignal import BlockSignal
 
         self.next_signal = None
         self.junction_wrong = False

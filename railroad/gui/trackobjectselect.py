@@ -1,8 +1,8 @@
 
 from pyglet.window import key
-from ..network.signal import Signal
-from ..network.distantsignal import DistantSignal
-from ..network.blocksignal import BlockSignal
+from railroad.network.signals.signal import Signal
+from railroad.network.signals.distantsignal import DistantSignal
+from railroad.network.signals.blocksignal import BlockSignal
 from ..network.opentrackmarker import OpenTrackMarker
 from .radiogroup import RadioGroup
 

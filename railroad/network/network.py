@@ -1,6 +1,5 @@
 
 from ..geometry import dist_to_segment
-from .signal import Signal
 
 
 class Network:
@@ -48,11 +47,10 @@ class Network:
                 shortest_distance = distance
         return nearest_segment
     
-    def get_nearest_track_object(self, position, to_type=None, max_distance=40):
+    def get_nearest_track_object(self, position, max_distance=40):
         nearest_to = None
         shortest_distance = float("inf")
-        valid_tos = self.track_objects if to_type is None else [to for to in self.track_objects if isinstance(to, to_type)]
-        for to in valid_tos:
+        for to in self.track_objects:
             distance = (position - to.position).length
             if distance < shortest_distance and distance <= max_distance:
                 nearest_to = to
@@ -73,10 +71,6 @@ class Network:
         return nearest_so
 
     @property
-    def signals(self):
-        return [to for to in self.track_objects if isinstance(to, Signal)]
-    
-    @property
     def show_nodes(self):
         return self._show_nodes
     
@@ -86,4 +80,3 @@ class Network:
             self._show_nodes = value
             for node in self.nodes:
                 node.sprite.visible = self._show_nodes
-

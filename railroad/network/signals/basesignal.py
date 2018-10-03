@@ -1,8 +1,8 @@
 
 import pyglet
-from .basetrackobject import BaseTrackObject
-from .. import graphics
-from ..vec import Vec
+from railroad.network.basetrackobject import BaseTrackObject
+from railroad import graphics
+from railroad.vec import Vec
 
 
 class BaseSignal(BaseTrackObject):

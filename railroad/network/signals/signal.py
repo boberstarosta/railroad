@@ -1,7 +1,7 @@
 
-from .. import graphics
-from .basesignal import BaseSignal
-from .trackahead import TrackAhead
+from railroad import graphics
+from railroad.network.signals.basesignal import BaseSignal
+from railroad.network.signals.trackahead import TrackAhead
 
 
 class Signal(BaseSignal):
