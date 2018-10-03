@@ -34,7 +34,6 @@ class TrackAhead:
             if True in [min_t <= tc.t <= max_t for tc in current_segment.traincars]:
                 self.traincar_present = True
 
-
             nearest_open_track = current_segment.nearest_track_object(node, OpenTrackMarker, min_t=min_t, max_t=max_t)
             if nearest_open_track is not None:
                 self.open_track = True

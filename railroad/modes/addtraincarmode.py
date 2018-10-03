@@ -50,10 +50,8 @@ class AddTrainCarMode(BaseMode):
                 t = geometry.nearest_t_on_line(mouse, nearest_segment.nodes[0].position,
                                                nearest_segment.nodes[1].position)
                 traincars = self.get_traincars(nearest_segment, t)
-                print(traincars)
                 for tc in traincars:
                     distance = (tc.position - TrainCar.position_from_t(nearest_segment, t)).length
-                    print(id(tc), distance, (tc.model.length + self.traincar_model.length) / 2)
                     if distance < (tc.model.length + self.traincar_model.length) / 2:
                         return
                 TrainCar(
