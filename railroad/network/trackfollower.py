@@ -1,6 +1,14 @@
 
+from enum import Enum
 from .signal import Signal
 from .blocksignal import BlockSignal
+
+
+class TrackStatus(Enum):
+
+    dead_end = 1
+    wrong_junction = 2
+    junction_turn = 3
 
 
 class FollowResult:
@@ -33,8 +41,6 @@ class FollowResult:
         if len(self.traincars) > 0:
             if self.first_signal is None:
                 return self.first_traincar is not None
-            else:
-                
         else:
             return False
 
