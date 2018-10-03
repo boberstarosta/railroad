@@ -27,28 +27,20 @@ class AddTrainCarMode(BaseMode):
             if len(current_segment.traincars) > 0:
                 sorted_traincars = sorted(current_segment.traincars, key=lambda tc: tc.t)
                 if next_node is current_segment.nodes[0]:
-                    return sorted_traincars[0]
-                else:
                     return sorted_traincars[-1]
+                else:
+                    return sorted_traincars[0]
             current_segment = next_node.other_segment(current_segment)
             if current_segment is not None:
                 next_node = current_segment.other_node(next_node)
 
         return None
 
-    def get_nearest_traincar(self, segment, t):
+    def get_traincars(self, segment, t):
         prev_traincar = self.follow_track_until_traincar(segment, t, backwards=True)
         next_traincar = self.follow_track_until_traincar(segment, t, backwards=False)
         traincars = [tc for tc in [prev_traincar, next_traincar] if tc is not None]
-        nearest_tc = None
-        if len(traincars) == 1:
-            nearest_tc = traincars[0]
-        elif len(traincars) >= 2:
-            def distance(segment, t, traincar):
-                position = TrainCar.position_from_t(segment, t)
-                return (traincar.position - position).length
-            nearest_tc = min(traincars, key=lambda tc: distance(segment, t, tc))
-        return nearest_tc
+        return traincars
 
     def on_mouse_press(self, x, y, buttons, modifiers):
         if buttons & pyglet.window.mouse.LEFT:
@@ -57,10 +49,12 @@ class AddTrainCarMode(BaseMode):
             if nearest_segment is not None:
                 t = geometry.nearest_t_on_line(mouse, nearest_segment.nodes[0].position,
                                                nearest_segment.nodes[1].position)
-                nearest_tc = self.get_nearest_traincar(nearest_segment, t)
-                if nearest_tc is not None:
-                    distance = (nearest_tc.position - TrainCar.position_from_t(nearest_segment, t)).length
-                    if distance < (nearest_tc.model.length + self.traincar_model.length) / 2:
+                traincars = self.get_traincars(nearest_segment, t)
+                print(traincars)
+                for tc in traincars:
+                    distance = (tc.position - TrainCar.position_from_t(nearest_segment, t)).length
+                    print(id(tc), distance, (tc.model.length + self.traincar_model.length) / 2)
+                    if distance < (tc.model.length + self.traincar_model.length) / 2:
                         return
                 TrainCar(
                     self.app.trains,
