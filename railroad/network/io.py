@@ -34,13 +34,13 @@ def save_network(network, filename):
         straight = str(edge.straight)
         lines.append("|".join((symbol, nodes, straight)))
 
-    for to in network.track_objects:
+    for sto in network.static_track_objects:
         symbol = "TO"
-        type_ = type_to_str[type(to)]
-        parent_edge = str(network.edges.index(to.parent_segment.parent_edge))
-        parent_segment_index = str(to.parent_segment.parent_edge.track_segments.index(to.parent_segment))
-        t = str(to.t)
-        rotated = str(to.rotated)
+        type_ = type_to_str[type(sto)]
+        parent_edge = str(network.edges.index(sto.parent_segment.parent_edge))
+        parent_segment_index = str(sto.parent_segment.parent_edge.track_segments.index(sto.parent_segment))
+        t = str(sto.t)
+        rotated = str(sto.rotated)
         lines.append("|".join((symbol, type_, parent_edge, parent_segment_index, t, rotated)))
 
     for so in network.scenery_objects:
