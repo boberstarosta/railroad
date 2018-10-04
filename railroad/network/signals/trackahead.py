@@ -1,5 +1,6 @@
 
 from railroad.network.opentrackmarker import OpenTrackMarker
+from ...trains.traincar import TrainCar
 
 
 class TrackAhead:
@@ -30,22 +31,25 @@ class TrackAhead:
         while self.next_signal is None and current_segment is not None and \
                 current_segment not in checked_segments:
 
-            # Check for train cars
-            if True in [min_t <= tc.t <= max_t for tc in current_segment.traincars]:
-                self.traincar_present = True
+            # Check for both traincars and signals
+            nearest_track_object = current_segment.nearest_track_object(
+                node, TrainCar, Signal, BlockSignal, OpenTrackMarker, min_t=min_t, max_t=max_t, exclude=[caller])
 
-            nearest_open_track = current_segment.nearest_track_object(node, OpenTrackMarker, min_t=min_t, max_t=max_t)
-            if nearest_open_track is not None:
+            # Return status depending on nearest_track_object type
+            if isinstance(nearest_track_object, TrainCar):
+                print("traincar")
+                self.traincar_present = True
+                return
+            elif isinstance(nearest_track_object, OpenTrackMarker):
+                print("open track")
                 self.open_track = True
                 return
-
-            # Check for nearest signals
-            nearest_signal = current_segment.nearest_track_object(node, Signal, BlockSignal,
-                                                                  min_t=min_t, max_t=max_t, exclude=exclude)
-            if nearest_signal is not None:
-                self.next_signal = nearest_signal
+            elif isinstance(nearest_track_object, Signal) or isinstance(nearest_track_object, BlockSignal):
+                print("signal")
+                self.next_signal = nearest_track_object
                 return
 
+            print("continuing")
             # Check for junctions
             next_node = current_segment.other_node(node)
             if len(next_node.edges) == 3:

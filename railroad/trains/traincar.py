@@ -17,6 +17,7 @@ class TrainCar(BaseTrackObject):
         self._update_sprite()
 
     def delete(self):
+        super().delete()
         self.sprite.delete()
         self.trains.traincars.remove(self)
         self.parent_segment.traincars.remove(self)
