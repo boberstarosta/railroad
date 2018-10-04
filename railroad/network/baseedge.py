@@ -31,6 +31,10 @@ class BaseEdge:
         else:
             raise IndexError("Edge.other_node: Not my node")
     
+    def position_from_t(self, t):
+        vector = self.nodes[1].position - self.nodes[0].position
+        return self.nodes[0].position + vector * t
+
     @property
     def length(self):
         return (self.nodes[1].position - self.nodes[0].position).length
