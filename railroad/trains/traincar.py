@@ -1,45 +1,44 @@
 
 from .. import geometry
+from ..network.basetrackobject import BaseTrackObject
 
 
-class TrainCar:
+class TrainCar(BaseTrackObject):
 
-    def __init__(self, trains, model, segment, t, rotated=False, parent_consist=None):
+    def __init__(self, trains, model, parent_segment, t, rotated=False, parent_consist=None):
+        super().__init__(trains.network, parent_segment, t, rotated)
         self.trains = trains
         self.model = model
-        self.segment = segment
-        self._t = t
-        self._rotated = rotated
         self._position = None
         self.parent_consist = parent_consist
         self.sprite = model.create_sprite(trains.network.app.batch)
         trains.traincars.append(self)
-        segment.traincars.append(self)
+        parent_segment.traincars.append(self)
         self._update_sprite()
 
     def delete(self):
         self.sprite.delete()
         self.trains.traincars.remove(self)
-        self.segment.traincars.remove(self)
+        self.parent_segment.traincars.remove(self)
 
     def update(self, dt):
         pass
 
     def _follow_track_dist(self, distance, backwards):
         # First check if my segment is long enough
-        delta_t = distance / self.segment.length
+        delta_t = distance / self.parent_segment.length
         if backwards:
             delta_t *= -1
         new_t = self.t + delta_t
 
         if 0 < new_t < 1:
             # My segment is long enough
-            return self.segment, new_t
+            return self.parent_segment, new_t
         else:
             # My segment is too short, start going further along the track
-            my_position = self.position_from_t(self.segment, self.t)
-            next_node = self.segment.nodes[0] if backwards else self.segment.nodes[1]
-            current_segment = next_node.other_segment(self.segment)
+            my_position = self.position_from_t(self.parent_segment, self.t)
+            next_node = self.parent_segment.nodes[0] if backwards else self.parent_segment.nodes[1]
+            current_segment = next_node.other_segment(self.parent_segment)
             if current_segment is not None:
                 next_node = current_segment.other_node(next_node)
                 while current_segment is not None:
@@ -66,7 +65,7 @@ class TrainCar:
 
             # Reached end of the line and still too close.
             # TODO: Do something if no point found
-            return self.segment, new_t
+            return self.parent_segment, new_t
 
     def _get_wheel_points(self):
         segment0, t0 = self._follow_track_dist(self.model.wheelbase / 2, backwards=True)

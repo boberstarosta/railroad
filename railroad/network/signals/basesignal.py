@@ -1,11 +1,11 @@
 
 import pyglet
-from railroad.network.basetrackobject import BaseTrackObject
+from railroad.network.statictrackobject import StaticTrackObject
 from railroad import graphics
 from railroad.vec import Vec
 
 
-class BaseSignal(BaseTrackObject):
+class BaseSignal(StaticTrackObject):
     
     height = 300
     corona_height = 70

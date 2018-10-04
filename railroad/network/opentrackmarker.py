@@ -1,11 +1,11 @@
 
 import pyglet
 
-from .basetrackobject import BaseTrackObject
+from .statictrackobject import StaticTrackObject
 from .. import graphics
 
 
-class OpenTrackMarker(BaseTrackObject):
+class OpenTrackMarker(StaticTrackObject):
     
     def __init__(self, network, parent_segment, t, rotated=False):
         super().__init__(network, parent_segment, t, rotated)

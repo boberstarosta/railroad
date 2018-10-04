@@ -37,15 +37,18 @@ class App:
             self.gui.show_notification(text)
 
     def on_key_press(self, symbol, modifiers):
+        save_file = "test.save"
         if symbol == pyglet.window.key.O and modifiers & pyglet.window.key.MOD_SHIFT:
             self.network.show_nodes = not self.network.show_nodes
-        save_file = "test.save"
-        if symbol == pyglet.window.key.S and modifiers & pyglet.window.key.MOD_CTRL:
+        elif symbol == pyglet.window.key.S and modifiers & pyglet.window.key.MOD_CTRL:
             save_network(self.network, save_file)
             self.gui.show_notification("Saved network to {}".format(save_file))
-        if symbol == pyglet.window.key.L and modifiers & pyglet.window.key.MOD_CTRL:
+        elif symbol == pyglet.window.key.L and modifiers & pyglet.window.key.MOD_CTRL:
             load_network(self.network, save_file)
             self.gui.show_notification("Loaded network from {}".format(save_file))
+        elif symbol == pyglet.window.key.N and modifiers & pyglet.window.key.MOD_CTRL:
+            self.network.clear()
+            self.gui.show_notification("New empty network")
         self.mode.on_key_press(symbol, modifiers)
 
     def on_mouse_motion(self, x, y, dx, dy):

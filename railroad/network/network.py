@@ -9,7 +9,7 @@ class Network:
         self.edges = []
         self.track_nodes = []
         self.track_segments = []
-        self.track_objects = []
+        self.static_track_objects = []
         self.scenery_objects = []
         self._show_nodes = True
     
@@ -17,9 +17,18 @@ class Network:
         if self.show_nodes:
             for node in self.nodes:
                 node.sprite.rotation -= dt * 90.0
-        for to in self.track_objects:
+        for to in self.static_track_objects:
             to.update(dt)
-    
+
+    def clear(self):
+        # Clear the network - edges, nodes, track objects
+        while len(self.edges) > 0:
+            self.edges[-1].delete()
+        while len(self.nodes) > 0:
+            self.nodes[-1].delete()
+        while len(self.scenery_objects) > 0:
+            self.scenery_objects[-1].delete()
+
     def get_nearest_node(self, position, excluded=None, max_distance=40):
         if excluded is None:
             excluded = []
@@ -50,7 +59,7 @@ class Network:
     def get_nearest_track_object(self, position, max_distance=40):
         nearest_to = None
         shortest_distance = float("inf")
-        for to in self.track_objects:
+        for to in self.static_track_objects:
             distance = (position - to.position).length
             if distance < shortest_distance and distance <= max_distance:
                 nearest_to = to

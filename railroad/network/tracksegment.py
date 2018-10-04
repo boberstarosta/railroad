@@ -9,6 +9,7 @@ class TrackSegment(BaseEdge):
         self.network = network
         self.parent_edge = parent_edge
         self.track_objects = []
+        self.static_track_objects = []
         self.traincars = []
         self.network.track_segments.append(self)
     
