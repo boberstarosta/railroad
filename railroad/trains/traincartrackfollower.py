@@ -4,7 +4,7 @@ from .traincar import TrainCar
 
 
 class TrainCarTrackFollower(BaseTrackFollower):
-    """Follows track until a traincar is found"""
+    """Follows track until first traincar is found"""
 
     def __init__(self, segment, t, backwards):
         self.traincar = None
