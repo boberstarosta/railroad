@@ -3,6 +3,8 @@ from .. import geometry
 from ..trains.models import *
 from ..trains.traincar import TrainCar
 from ..trains.traincartrackfollower import TrainCarTrackFollower
+from ..trains.trackfollower import TrackFollower
+from ..trains.coupling import Coupling
 from .basemode import BaseMode
 
 
@@ -13,7 +15,8 @@ class AddTrainCarMode(BaseMode):
         super().__init__(app)
         self.traincar_model = TrainCarBulk
 
-    def get_traincars(self, segment, t):
+    @staticmethod
+    def get_traincars(segment, t):
         prev_traincar = TrainCarTrackFollower(segment, t, backwards=True).traincar
         next_traincar = TrainCarTrackFollower(segment, t, backwards=False).traincar
         traincars = [tc for tc in [prev_traincar, next_traincar] if tc is not None]
@@ -30,6 +33,22 @@ class AddTrainCarMode(BaseMode):
                 for tc in traincars:
                     distance = (tc.position - nearest_segment.position_from_t(t)).length
                     if distance < (tc.model.length + self.traincar_model.length) / 2:
+                        nearest_coupling = self.app.trains.nearest_coupling(mouse, tc)
+                        if len(nearest_coupling.traincars) < 2:
+                            if nearest_coupling is tc.couplings[0]:
+                                backwards = True
+                            else:
+                                backwards = False
+                            track = TrackFollower(
+                                tc.parent_segment, tc.t, backwards,
+                                tc.model.length/2 + Coupling.length + self.traincar_model.length/2
+                            )
+                            if track.final_segment is not None:
+                                new_traincar = TrainCar(
+                                    self.app.trains, self.traincar_model,
+                                    track.final_segment, track.final_t,
+                                    coupling0=nearest_coupling
+                                )
                         return
                 TrainCar(
                     self.app.trains,
