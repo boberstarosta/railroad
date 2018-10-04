@@ -11,7 +11,7 @@ def update(x, y):
     start = Vec(-400, -300)
     end = Vec(0, 0)
     point = mouse
-    params = t_from_distance(point, start, end - start, 300)
+    params = param_from_distance(point, start, end - start, 300)
     solutions = [start + (end - start)*t for t in params]
 
     print(params)
