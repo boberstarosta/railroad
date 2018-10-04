@@ -6,14 +6,15 @@ from .distancetrackfollower import DistanceTrackFollower
 
 class TrainCar(BaseTrackObject):
 
-    def __init__(self, trains, model, parent_segment, t, rotated=False, parent_consist=None):
+    def __init__(self, trains, model, parent_segment, t, rotated=False, couple_with=None):
         super().__init__(trains.network, parent_segment, t, rotated)
         self.trains = trains
         self.model = model
         self._position = None
-        if parent_consist is None:
-            parent_consist = Consist(trains)
-        self.parent_consist = parent_consist
+        if couple_with is None:
+            self.parent_consist = Consist(trains)
+        else:
+            self.parent_consist = couple_with.parent_consist
         self.sprite = model.create_sprite(trains.network.app.batch)
         self.coupled_traincars = [None] * 2
         trains.traincars.append(self)
