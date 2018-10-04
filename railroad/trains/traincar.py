@@ -1,6 +1,7 @@
 
-from .. import geometry
 from ..network.basetrackobject import BaseTrackObject
+from .consist import Consist
+from .distancetrackfollower import DistanceTrackFollower
 
 
 class TrainCar(BaseTrackObject):
@@ -10,75 +11,31 @@ class TrainCar(BaseTrackObject):
         self.trains = trains
         self.model = model
         self._position = None
+        if parent_consist is None:
+            parent_consist = Consist(trains)
         self.parent_consist = parent_consist
         self.sprite = model.create_sprite(trains.network.app.batch)
         trains.traincars.append(self)
         parent_segment.traincars.append(self)
-        self._update_sprite()
+        self._update_position()
 
     def delete(self):
         super().delete()
         self.sprite.delete()
         self.trains.traincars.remove(self)
         self.parent_segment.traincars.remove(self)
+        self.parent_consist.traincars.remove(self)
 
     def update(self, dt):
         pass
 
-    def _follow_track_dist(self, distance, backwards):
-        # First check if my segment is long enough
-        delta_t = distance / self.parent_segment.length
-        if backwards:
-            delta_t *= -1
-        new_t = self.t + delta_t
-
-        if 0 < new_t < 1:
-            # My segment is long enough
-            return self.parent_segment, new_t
-        else:
-            # My segment is too short, start going further along the track
-            my_position = self.position_from_t(self.parent_segment, self.t)
-            next_node = self.parent_segment.nodes[0] if backwards else self.parent_segment.nodes[1]
-            current_segment = next_node.other_segment(self.parent_segment)
-            if current_segment is not None:
-                next_node = current_segment.other_node(next_node)
-                while current_segment is not None:
-                    params = geometry.t_from_distance(
-                        my_position,
-                        current_segment.nodes[0].position,
-                        current_segment.nodes[1].position - current_segment.nodes[0].position,
-                        distance
-                    )
-                    good_params = [p for p in params if 0 < p < 1]
-                    if len(good_params) == 1:
-                        # One param is within current_segment
-                        return current_segment, good_params[0]
-                    elif len(good_params) == 2:
-                        # Two params are within current_segment
-                        # Choose the param further from next_node (closer to my segment)
-                        t = max(good_params) if next_node is current_segment.nodes[0] else min(good_params)
-                        return current_segment, t
-                    else:
-                        # Both ends of current_segment are too close, continue to the next segment
-                        current_segment = next_node.other_segment(current_segment)
-                        if current_segment is not None:
-                            next_node = current_segment.other_node(next_node)
-
-            # Reached end of the line and still too close.
-            # TODO: Do something if no point found
-            return self.parent_segment, new_t
-
     def _get_wheel_points(self):
-        segment0, t0 = self._follow_track_dist(self.model.wheelbase / 2, backwards=True)
-        segment1, t1 = self._follow_track_dist(self.model.wheelbase / 2, backwards=False)
-        return self.position_from_t(segment0, t0), self.position_from_t(segment1, t1)
+        track_back = DistanceTrackFollower(self, backwards=True)
+        track_front = DistanceTrackFollower(self, backwards=False)
+        return track_back.found_segment.position_from_t(track_back.found_t),\
+               track_front.found_segment.position_from_t(track_front.found_t)
 
-    @staticmethod
-    def position_from_t(segment, t):
-        vector = segment.nodes[1].position - segment.nodes[0].position
-        return segment.nodes[0].position + vector * t
-
-    def _update_sprite(self):
+    def _update_position(self):
         wheel0, wheel1 = self._get_wheel_points()
         self._position = (wheel0 + wheel1) / 2
         self.sprite.position = self._position
@@ -92,7 +49,7 @@ class TrainCar(BaseTrackObject):
     def t(self, value):
         if value != self._t:
             self._t = value
-            self._update_sprite()
+            self._update_position()
 
     @property
     def position(self):
