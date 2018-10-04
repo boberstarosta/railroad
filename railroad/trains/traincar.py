@@ -17,6 +17,7 @@ class TrainCar(BaseTrackObject):
         self.sprite = model.create_sprite(trains.network.app.batch)
         trains.traincars.append(self)
         parent_segment.traincars.append(self)
+        self.parent_consist.traincars.append(self)
         self._update_position()
 
     def delete(self):
