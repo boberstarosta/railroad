@@ -51,7 +51,7 @@ class AddTrainCarMode(BaseMode):
                                                nearest_segment.nodes[1].position)
                 traincars = self.get_traincars(nearest_segment, t)
                 for tc in traincars:
-                    distance = (tc.position - TrainCar.position_from_t(nearest_segment, t)).length
+                    distance = (tc.position - nearest_segment.position_from_t(t)).length
                     if distance < (tc.model.length + self.traincar_model.length) / 2:
                         return
                 TrainCar(
