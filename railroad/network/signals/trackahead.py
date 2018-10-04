@@ -37,19 +37,15 @@ class TrackAhead:
 
             # Return status depending on nearest_track_object type
             if isinstance(nearest_track_object, TrainCar):
-                print("traincar")
                 self.traincar_present = True
                 return
             elif isinstance(nearest_track_object, OpenTrackMarker):
-                print("open track")
                 self.open_track = True
                 return
             elif isinstance(nearest_track_object, Signal) or isinstance(nearest_track_object, BlockSignal):
-                print("signal")
                 self.next_signal = nearest_track_object
                 return
 
-            print("continuing")
             # Check for junctions
             next_node = current_segment.other_node(node)
             if len(next_node.edges) == 3:
