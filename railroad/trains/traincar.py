@@ -15,6 +15,7 @@ class TrainCar(BaseTrackObject):
             parent_consist = Consist(trains)
         self.parent_consist = parent_consist
         self.sprite = model.create_sprite(trains.network.app.batch)
+        self.coupled_traincars = [None] * 2
         trains.traincars.append(self)
         parent_segment.traincars.append(self)
         self.parent_consist.traincars.append(self)
@@ -26,6 +27,11 @@ class TrainCar(BaseTrackObject):
         self.trains.traincars.remove(self)
         self.parent_segment.traincars.remove(self)
         self.parent_consist.traincars.remove(self)
+        for i, tc in enumerate(self.coupled_traincars):
+            if tc is not None:
+                my_index = tc.coupled_traincars.index(self)
+                tc.coupled_traincars[my_index] = None
+                self.coupled_traincars[i] = None
 
     def update(self, dt):
         pass
