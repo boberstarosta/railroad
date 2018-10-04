@@ -19,7 +19,7 @@ class DistanceTrackFollower(BaseTrackFollower):
             delta_t *= -1
         self.found_t = traincar.t + delta_t
 
-        super().__init__(traincar.parent_segment, traincar.t, backwards)
+        self.run(traincar.parent_segment, traincar.t, backwards)
 
     def check_segment(self, current_segment, node, min_t, max_t):
         params = geometry.param_from_distance(

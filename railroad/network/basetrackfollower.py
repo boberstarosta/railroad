@@ -2,11 +2,12 @@
 BaseTrackFollower
 
     Inherit from this class and override check_segment method to follow a track.
+    Call run() method to start following.
 """
 
 class BaseTrackFollower:
 
-    def __init__(self, segment, t, backwards):
+    def run(self, segment, t, backwards):
         checked_segments = []
 
         node_index = 1 if backwards else 0

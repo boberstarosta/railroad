@@ -17,7 +17,7 @@ class SignalTrackFollower(BaseTrackFollower):
         self.open_track = False
         self.traincar_present = False
 
-        super().__init__(caller.parent_segment, caller.t, caller.rotated)
+        self.run(caller.parent_segment, caller.t, caller.rotated)
 
     def check_segment(self, current_segment, node, min_t, max_t):
             # Check for both traincars and signals
