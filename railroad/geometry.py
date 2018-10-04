@@ -4,7 +4,7 @@ import math
 from .vec import Vec
 
 
-def t_from_distance(p: Vec, s: Vec, u: Vec, d: float) -> tuple:
+def param_from_distance(p: Vec, s: Vec, u: Vec, d: float) -> tuple:
     """ Find parameter 't' for line 's + t*u', where distance to point 'p' is 'd'
     :param p: point
     :param s: start of line
