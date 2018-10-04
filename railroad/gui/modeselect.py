@@ -21,6 +21,7 @@ class ModeSelect(RadioGroup):
             (key.SEMICOLON, MoveTrackObjectMode),
             (key.E, AddSceneryObjectMode),
             (key.T, AddTrainCarMode),
+            (key.GRAVE, DebugMode),
         ]
         data = [(k, mc.name) for k, mc in self.mode_data]
         super().__init__(gui, data, align_x, align_y, padding)
