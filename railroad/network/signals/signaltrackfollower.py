@@ -1,12 +1,15 @@
 
-from railroad.network.opentrackmarker import OpenTrackMarker
+from ..basetrackfollower import BaseTrackFollower
+from ..opentrackmarker import OpenTrackMarker
 from ...trains.traincar import TrainCar
+from .signal import Signal
+from .blocksignal import BlockSignal
 
 
-class TrackAhead:
+class SignalTrackFollower(BaseTrackFollower):
+
     def __init__(self, caller):
-        from railroad.network.signals.signal import Signal
-        from railroad.network.signals.blocksignal import BlockSignal
+        self.caller = caller
 
         self.next_signal = None
         self.junction_wrong = False
@@ -14,35 +17,23 @@ class TrackAhead:
         self.open_track = False
         self.traincar_present = False
 
-        checked_segments = []
+        super().__init__(caller.parent_segment, caller.t, caller.rotated)
 
-        node_index = 1 if caller.rotated else 0
-        node = caller.parent_segment.nodes[node_index]
-        current_segment = caller.parent_segment
-
-        if caller.rotated:
-            min_t = 0.0
-            max_t = caller.t
-        else:
-            min_t = caller.t
-            max_t = 1.0
-
-        while current_segment is not None and current_segment not in checked_segments:
-
+    def check_segment(self, current_segment, node, min_t, max_t):
             # Check for both traincars and signals
             nearest_track_object = current_segment.nearest_track_object(
-                node, TrainCar, Signal, BlockSignal, OpenTrackMarker, min_t=min_t, max_t=max_t, exclude=[caller])
+                node, TrainCar, Signal, BlockSignal, OpenTrackMarker, min_t=min_t, max_t=max_t, exclude=[self.caller])
 
             # Return with a status depending on nearest_track_object type
             if isinstance(nearest_track_object, TrainCar):
                 self.traincar_present = True
-                return
+                return True
             elif isinstance(nearest_track_object, OpenTrackMarker):
                 self.open_track = True
-                return
+                return True
             elif isinstance(nearest_track_object, Signal) or isinstance(nearest_track_object, BlockSignal):
                 self.next_signal = nearest_track_object
-                return
+                return True
 
             # Check for junctions
             next_node = current_segment.other_node(node)
@@ -50,7 +41,7 @@ class TrackAhead:
                 if ((next_node.is_switched and current_segment is next_node.straight)
                         or (not next_node.is_switched and current_segment is next_node.turn)):
                     self.junction_wrong = True
-                    return
+                    return True
                 else:
                     junction_turn = (
                             (current_segment is next_node.turn) or
@@ -58,12 +49,3 @@ class TrackAhead:
                     )
                     if junction_turn:
                         self.junction_turn = True
-
-            # Proceed to next segment
-            checked_segments.append(current_segment)
-            node = current_segment.other_node(node)
-            current_segment = node.other_segment(current_segment)
-
-            # Only needed for self.parent_segment, no longer needed now
-            min_t = 0.0
-            max_t = 1.0

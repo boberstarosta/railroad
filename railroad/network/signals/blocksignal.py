@@ -1,7 +1,6 @@
 
-from railroad import graphics
-from railroad.network.signals.basesignal import BaseSignal
-from railroad.network.signals.trackahead import TrackAhead
+from ... import graphics
+from .basesignal import BaseSignal
 
 
 class BlockSignal(BaseSignal):
@@ -22,17 +21,12 @@ class BlockSignal(BaseSignal):
         super().__init__(network, parent_segment, t, rotated)
         self.setting = "full"
 
-    class TrackAhead:
-        def __init__(self, next_signal, junction_turn, junction_wrong, open_track):
-            self.next_signal = next_signal
-            self.junction_turn = junction_turn
-            self.junction_wrong = junction_wrong
-            self.open_track = open_track
-
     def update_setting(self):
+        from .signaltrackfollower import SignalTrackFollower
+
         setting = "full"
         next_setting = "full"
-        track_ahead = TrackAhead(self)
+        track_ahead = SignalTrackFollower(self)
         if track_ahead.junction_wrong or track_ahead.traincar_present:
             setting = "stop"
         else:

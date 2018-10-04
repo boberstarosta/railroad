@@ -1,7 +1,7 @@
 
-from railroad import graphics
-from railroad.network.signals.basesignal import BaseSignal
-from railroad.network.signals.trackahead import TrackAhead
+from ... import graphics
+from .basesignal import BaseSignal
+from .signaltrackfollower import SignalTrackFollower
 
 
 class DistantSignal(BaseSignal):
@@ -22,7 +22,7 @@ class DistantSignal(BaseSignal):
     
     def update_setting(self):
         next_setting = "off"
-        track_ahead = TrackAhead(self)
+        track_ahead = SignalTrackFollower(self)
         if track_ahead.next_signal is not None:
             next_setting = track_ahead.next_signal.setting
 
