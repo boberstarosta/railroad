@@ -27,8 +27,7 @@ class TrackAhead:
             min_t = caller.t
             max_t = 1.0
 
-        while self.next_signal is None and current_segment is not None and \
-                current_segment not in checked_segments:
+        while current_segment is not None and current_segment not in checked_segments:
 
             # Check for both traincars and signals
             nearest_track_object = current_segment.nearest_track_object(
