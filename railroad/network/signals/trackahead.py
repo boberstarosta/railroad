@@ -26,7 +26,6 @@ class TrackAhead:
         else:
             min_t = caller.t
             max_t = 1.0
-        exclude = [caller]
 
         while self.next_signal is None and current_segment is not None and \
                 current_segment not in checked_segments:
@@ -35,7 +34,7 @@ class TrackAhead:
             nearest_track_object = current_segment.nearest_track_object(
                 node, TrainCar, Signal, BlockSignal, OpenTrackMarker, min_t=min_t, max_t=max_t, exclude=[caller])
 
-            # Return status depending on nearest_track_object type
+            # Return with a status depending on nearest_track_object type
             if isinstance(nearest_track_object, TrainCar):
                 self.traincar_present = True
                 return
@@ -65,7 +64,7 @@ class TrackAhead:
             checked_segments.append(current_segment)
             node = current_segment.other_node(node)
             current_segment = node.other_segment(current_segment)
+
             # Only needed for self.parent_segment, no longer needed now
             min_t = 0.0
             max_t = 1.0
-            exclude = []

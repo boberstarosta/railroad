@@ -35,7 +35,7 @@ class TrackSegment(BaseEdge):
     def nearest_track_object(self, node, *to_classes, min_t=None, max_t=None, exclude=None):
         """
 
-        :node: direction of search from this node
+        :node: starting node, determining direction
         """
         if exclude is None:
             exclude = []
