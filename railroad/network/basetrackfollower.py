@@ -10,8 +10,7 @@ class BaseTrackFollower:
     def run(self, segment, t, backwards):
         checked_segments = []
 
-        node_index = 1 if backwards else 0
-        node = segment.nodes[node_index]
+        node = segment.nodes[1 if backwards else 0]
         current_segment = segment
 
         if backwards:
