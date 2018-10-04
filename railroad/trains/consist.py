@@ -10,3 +10,6 @@ class Consist:
         for traincar in self.traincars:
             traincar.delete()
         self.trains.consists.remove(self)
+
+    def update(self, dt):
+        pass
