@@ -1,6 +1,7 @@
 
 from ... import graphics
 from .basesignal import BaseSignal
+import railroad.network.signals.signaltrackfollower
 
 
 class Signal(BaseSignal):
@@ -24,12 +25,10 @@ class Signal(BaseSignal):
         self.setting = "stop"
     
     def update_setting(self):
-        from .signaltrackfollower import SignalTrackFollower
-
         # Default is "stop", "stop"
         setting = "stop"
         next_setting = "stop"
-        track_ahead = SignalTrackFollower(self)
+        track_ahead = railroad.network.signals.signaltrackfollower.SignalTrackFollower(self)
         if not track_ahead.junction_wrong and not track_ahead.traincar_present:
             if track_ahead.junction_turn:
                 setting = "40"

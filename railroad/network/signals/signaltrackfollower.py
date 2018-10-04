@@ -1,9 +1,9 @@
 
 from ..basetrackfollower import BaseTrackFollower
-from ..opentrackmarker import OpenTrackMarker
 from ...trains.traincar import TrainCar
-from .signal import Signal
-from .blocksignal import BlockSignal
+import railroad.network.signals.signal
+import railroad.network.signals.blocksignal
+import railroad.network.opentrackmarker
 
 
 class SignalTrackFollower(BaseTrackFollower):
@@ -22,16 +22,23 @@ class SignalTrackFollower(BaseTrackFollower):
     def check_segment(self, current_segment, node, min_t, max_t):
             # Check for both traincars and signals
             nearest_track_object = current_segment.nearest_track_object(
-                node, TrainCar, Signal, BlockSignal, OpenTrackMarker, min_t=min_t, max_t=max_t, exclude=[self.caller])
+                node,
+                TrainCar,
+                railroad.network.signals.signal.Signal,
+                railroad.network.signals.blocksignal.BlockSignal,
+                railroad.network.opentrackmarker.OpenTrackMarker,
+                min_t=min_t, max_t=max_t, exclude=[self.caller]
+            )
 
             # Return with a status depending on nearest_track_object type
             if isinstance(nearest_track_object, TrainCar):
                 self.traincar_present = True
                 return True
-            elif isinstance(nearest_track_object, OpenTrackMarker):
+            elif isinstance(nearest_track_object, railroad.network.opentrackmarker.OpenTrackMarker):
                 self.open_track = True
                 return True
-            elif isinstance(nearest_track_object, Signal) or isinstance(nearest_track_object, BlockSignal):
+            elif isinstance(nearest_track_object, railroad.network.signals.signal.Signal) \
+                    or isinstance(nearest_track_object, railroad.network.signals.blocksignal.BlockSignal):
                 self.next_signal = nearest_track_object
                 return True
 
