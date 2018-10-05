@@ -33,6 +33,10 @@ class img:
     gui_radio_check  = pyglet.resource.image("data/gui/radio check.png")
 
     debug_arrow_violet  = pyglet.resource.image("data/debug/arrow violet.png")
+    debug_traincar = pyglet.resource.image("data/debug/traincar.png")
+    debug_wheel = pyglet.resource.image("data/debug/wheel.png")
+    debug_length = pyglet.resource.image("data/debug/length.png")
+    debug_distance = pyglet.resource.image("data/debug/distance.png")
 
 
 for attr in [getattr(img, i) for i in dir(img)]:
