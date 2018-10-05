@@ -1,7 +1,7 @@
 
 from ..network.basetrackobject import BaseTrackObject
 from .consist import Consist
-from .distancetrackfollower import DistanceTrackFollower
+import railroad.network.scanners
 from .coupling import Coupling
 
 
@@ -42,8 +42,8 @@ class TrainCar(BaseTrackObject):
         pass
 
     def _get_wheel_points(self):
-        track_back = DistanceTrackFollower(self, backwards=True)
-        track_front = DistanceTrackFollower(self, backwards=False)
+        track_back = railroad.network.scanners.DistanceScanner(self, backwards=True)
+        track_front = railroad.network.scanners.DistanceScanner(self, backwards=False)
         return (track_back.found_segment.position_from_t(track_back.found_t),
                 track_front.found_segment.position_from_t(track_front.found_t))
 

@@ -1,9 +1,9 @@
 
-from .. import geometry
-from ..network.basetrackfollower import BaseTrackFollower
+from railroad import geometry
+from .basescanner import BaseScanner
 
 
-class DistanceTrackFollower(BaseTrackFollower):
+class DistanceScanner(BaseScanner):
     """Follows a track for a given distance.
         Can be used to get track a point on a track that is a given distance away from traincar. 
     """

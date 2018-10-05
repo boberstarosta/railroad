@@ -1,6 +1,7 @@
 
 from ... import graphics
 from .basesignal import BaseSignal
+import railroad.network.scanners
 
 
 class BlockSignal(BaseSignal):
@@ -22,11 +23,9 @@ class BlockSignal(BaseSignal):
         self.setting = "full"
 
     def update_setting(self):
-        from .signaltrackfollower import SignalTrackFollower
-
         setting = "full"
         next_setting = "full"
-        track_ahead = SignalTrackFollower(self)
+        track_ahead = railroad.network.scanners.SignalScanner(self)
         if track_ahead.junction_wrong or track_ahead.traincar_present:
             setting = "stop"
         else:

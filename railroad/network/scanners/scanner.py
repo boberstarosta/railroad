@@ -1,8 +1,8 @@
 
-from ..network.basetrackfollower import BaseTrackFollower
+from .basescanner import BaseScanner
 
 
-class TrackFollower(BaseTrackFollower):
+class Scanner(BaseScanner):
     """ Follows track for a given length """
 
     def __init__(self, segment, t, backwards, length):

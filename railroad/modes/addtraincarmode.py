@@ -2,8 +2,8 @@
 from .. import geometry
 from ..trains.models import *
 from ..trains.traincar import TrainCar
-from ..trains.traincartrackfollower import TrainCarTrackFollower
-from ..trains.trackfollower import TrackFollower
+from ..network.scanners import TrainCarScanner
+from ..network.scanners import Scanner
 from ..trains.coupling import Coupling
 from .basemode import BaseMode
 
@@ -17,8 +17,8 @@ class AddTrainCarMode(BaseMode):
 
     @staticmethod
     def get_traincars(segment, t):
-        prev_traincar = TrainCarTrackFollower(segment, t, backwards=True).traincar
-        next_traincar = TrainCarTrackFollower(segment, t, backwards=False).traincar
+        prev_traincar = TrainCarScanner(segment, t, backwards=True).traincar
+        next_traincar = TrainCarScanner(segment, t, backwards=False).traincar
         traincars = [tc for tc in [prev_traincar, next_traincar] if tc is not None]
         return traincars
 
@@ -39,7 +39,7 @@ class AddTrainCarMode(BaseMode):
                                 backwards = True
                             else:
                                 backwards = False
-                            track = TrackFollower(
+                            track = Scanner(
                                 tc.parent_segment, tc.t, backwards,
                                 tc.model.length/2 + Coupling.length + self.traincar_model.length/2
                             )
