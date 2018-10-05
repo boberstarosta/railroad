@@ -23,7 +23,7 @@ class DebugMode(BaseMode):
             batch=self.app.batch,
             group=graphics.group.gui_front,
         )
-        self.arrow_sprite_forward.scale = 200 / self.arrow_sprite_forward.height
+        self.arrow_sprite_forward.scale = 400 / self.arrow_sprite_forward.height
         self.arrow_sprite_forward.visible = False
 
         self.arrow_sprite_backward = pyglet.sprite.Sprite(
@@ -31,7 +31,7 @@ class DebugMode(BaseMode):
             batch=self.app.batch,
             group=graphics.group.gui_front,
         )
-        self.arrow_sprite_backward.scale = 200 / self.arrow_sprite_backward.height
+        self.arrow_sprite_backward.scale = 400 / self.arrow_sprite_backward.height
         self.arrow_sprite_backward.visible = False
 
         self.mouse = self.app.camera.to_world(0, 0)
