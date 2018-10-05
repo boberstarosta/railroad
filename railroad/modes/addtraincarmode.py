@@ -2,7 +2,6 @@
 from .. import geometry
 from ..trains.models import *
 from ..trains.traincar import TrainCar
-from ..trains.wheel import Wheel
 from ..network.scanners import TrackObjectScanner
 from ..network.scanners import Scanner
 from .basemode import BaseMode
@@ -16,11 +15,11 @@ class AddTrainCarMode(BaseMode):
         self.traincar_model = TrainCarBulk
         self.attach_length = 50
 
-    def attach_traincar(self, traincar_scan):
+    def attach_traincar(self, traincar_scan, backwards):
         length_scan = Scanner(
             traincar_scan.final_object.parent_segment,
             traincar_scan.final_object.t,
-            not traincar_scan.final_object.rotated,
+            backwards,
             self.traincar_model.length/2 + self.attach_length + traincar_scan.final_object.model.length/2
         )
 
@@ -50,7 +49,7 @@ class AddTrainCarMode(BaseMode):
                             print("Both too close")
                             return
                     print("One too close")
-                    self.attach_traincar(tcs)
+                    self.attach_traincar(tcs, i == 1)
                     return
 
         TrainCar(self.app.trains, self.traincar_model, segment, t)
