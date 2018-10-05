@@ -43,6 +43,19 @@ class DebugMode(BaseMode):
         self.arrow_sprite_forward.delete()
         self.arrow_sprite_backward.delete()
 
+    def update_scanner(self, sprite, backwards, length=1000):
+        if self.nearest_segment is not None:
+            scanner = Scanner(self.nearest_segment, self.nearest_t, backwards, length)
+            if scanner.final_segment is not None:
+                sprite.position = scanner.final_segment.position_from_t(scanner.final_t)
+                if scanner.final_backwards:
+                    sprite.rotation = -(-scanner.final_segment.direction).angle
+                else:
+                    sprite.rotation = -(scanner.final_segment.direction).angle
+                sprite.visible = True
+                return
+        sprite.visible = False
+
     def update(self, x, y):
         self.mouse = self.app.camera.to_world(x, y)
         self.nearest_segment = self.app.network.get_nearest_track_segment(self.mouse, self.search_radius)
@@ -52,25 +65,8 @@ class DebugMode(BaseMode):
         else:
             self.nearest_t = None
 
-        if self.nearest_segment is not None:
-            scanner_forward = Scanner(self.nearest_segment, self.nearest_t, False, 1000)
-            self.arrow_sprite_forward.position = scanner_forward.final_segment.position_from_t(scanner_forward.final_t)
-            if scanner_forward.final_backwards:
-                self.arrow_sprite_forward.rotation = -(-scanner_forward.final_segment.direction).angle
-            else:
-                self.arrow_sprite_forward.rotation = -(scanner_forward.final_segment.direction).angle
-            self.arrow_sprite_forward.visible = True
-
-            scanner_backward= Scanner(self.nearest_segment, self.nearest_t, True, 1000)
-            self.arrow_sprite_backward.position = scanner_backward.final_segment.position_from_t(scanner_backward.final_t)
-            if scanner_backward.final_backwards:
-                self.arrow_sprite_backward.rotation = -(-scanner_backward.final_segment.direction).angle
-            else:
-                self.arrow_sprite_backward.rotation = -(scanner_backward.final_segment.direction).angle
-            self.arrow_sprite_backward.visible = True
-        else:
-            self.arrow_sprite_forward.visible = False
-            self.arrow_sprite_backward.visible = False
+        self.update_scanner(self.arrow_sprite_forward, False)
+        self.update_scanner(self.arrow_sprite_backward, True)
 
         self.label.text = "\n".join([
             "len(traincars): {}".format(len(self.app.trains.traincars)),
