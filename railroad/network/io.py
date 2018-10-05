@@ -58,8 +58,6 @@ def load_network(network, filename):
     # Clear all trains - traincars, consists
     while len(network.app.trains.traincars) > 0:
         network.app.trains.traincars[-1].delete()
-    while len(network.app.trains.consists) > 0:
-        network.app.trains.consists[-1].delete()
 
     node_records = []
     edge_records = []
