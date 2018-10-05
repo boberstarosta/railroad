@@ -44,8 +44,8 @@ class TrainCar(BaseTrackObject):
     def _get_wheel_points(self):
         track_back = railroad.network.scanners.DistanceScanner(self, backwards=True)
         track_front = railroad.network.scanners.DistanceScanner(self, backwards=False)
-        return (track_back.found_segment.position_from_t(track_back.found_t),
-                track_front.found_segment.position_from_t(track_front.found_t))
+        return (track_back.final_segment.position_from_t(track_back.final_t),
+                track_front.final_segment.position_from_t(track_front.final_t))
 
     def _update_position(self):
         self._wheel_positions = self._get_wheel_points()
