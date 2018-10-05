@@ -18,6 +18,7 @@ class DistanceScanner(BaseScanner):
         if backwards:
             delta_t *= -1
         self.final_t = traincar.t + delta_t
+        self.final_reversed = None
 
         self.run(traincar.parent_segment, traincar.t, backwards)
 
@@ -33,10 +34,12 @@ class DistanceScanner(BaseScanner):
             # One param is within current_segment
             self.final_segment = current_segment
             self.final_t = good_params[0]
+            self.final_reversed = node is current_segment.nodes[1]
             return True
         elif len(good_params) == 2:
             # Two params are within current_segment
             self.final_segment = current_segment
             # Choose the param closer to node (closer to where I'm coming from)
-            t = max(good_params) if node is current_segment.nodes[1] else min(good_params)
-            return current_segment, t
+            self.final_t = max(good_params) if node is current_segment.nodes[1] else min(good_params)
+            self.final_reversed = node is current_segment[1]
+            return True
