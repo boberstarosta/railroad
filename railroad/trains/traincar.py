@@ -31,22 +31,18 @@ class TrainCar(BaseTrackObject):
         for wheel in self.wheels:
             wheel.delete()
 
-        scan_back = railroad.network.scanners.DistanceScanner(self, backwards=True)
-        scan_front = railroad.network.scanners.DistanceScanner(self, backwards=False)
+        scans = [
+            railroad.network.scanners.DistanceScanner(self, backwards=True),
+            railroad.network.scanners.DistanceScanner(self, backwards=False),
+        ]
 
-        self.wheels.append(Wheel(
-            self,
-            scan_back.final_segment,
-            scan_back.final_t,
-            scan_back.final_reversed
-        ))
-
-        self.wheels.append(Wheel(
-            self,
-            scan_front.final_segment,
-            scan_front.final_t,
-            scan_front.final_reversed
-        ))
+        for scan in scans:
+            self.wheels.append(Wheel(
+                self,
+                scan.final_segment,
+                scan.final_t,
+                False
+            ))
 
         self._position = (self.wheels[0].position + self.wheels[1].position) / 2
         self.sprite.position = self._position
