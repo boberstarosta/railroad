@@ -13,6 +13,8 @@ class TrackObjectScanner(BaseScanner):
 
         self.to_classes = to_classes
         self.final_object = None
+        self.final_segment = None
+        self.final_t = None
         self.length_travelled = 0
         self.run(segment, t, backwards)
 
@@ -24,5 +26,7 @@ class TrackObjectScanner(BaseScanner):
             else:
                 delta_t = max_t - self.final_object.t
             self.length_travelled += delta_t * current_segment.length
+            self.final_segment = current_segment
+            self.final_t = self.final_object.t
             return True
         self.length_travelled += (max_t - min_t) * current_segment.length

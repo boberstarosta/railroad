@@ -14,6 +14,22 @@ class AddTrainCarMode(BaseMode):
     def __init__(self, app):
         super().__init__(app)
         self.traincar_model = TrainCarBulk
+        self.attach_length = 50
+
+    def attach_traincar(self, traincar_scan):
+        length_scan = Scanner(
+            traincar_scan.final_object.parent_segment,
+            traincar_scan.final_object.t,
+            not traincar_scan.final_object.rotated,
+            self.traincar_model.length/2 + self.attach_length + traincar_scan.final_object.model.length/2
+        )
+
+        TrainCar(
+            self.app.trains,
+            self.traincar_model,
+            length_scan.final_segment,
+            length_scan.final_t
+        )
 
     def add_traincar(self, segment, t):
 
@@ -22,11 +38,19 @@ class AddTrainCarMode(BaseMode):
             TrackObjectScanner(segment, t, False, TrainCar),
         ]
 
-        for tcs in traincar_scans:
+        for i, tcs in enumerate(traincar_scans):
             if tcs.final_object is not None:
-                min_length = self.traincar_model.length/2 + 50 + tcs.final_object.model.length/2
+                min_length = self.traincar_model.length/2 + self.attach_length + tcs.final_object.model.length/2
                 if tcs.length_travelled < min_length:
-                    print("Too close")
+                    other_tcs = traincar_scans[(i + 1)%2]
+                    if other_tcs.final_object is not None:
+                        other_min_length =\
+                            self.traincar_model.length/2 + self.attach_length + other_tcs.final_object.model.length/2
+                        if other_tcs.length_travelled < other_min_length:
+                            print("Both too close")
+                            return
+                    print("One too close")
+                    self.attach_traincar(tcs)
                     return
 
         TrainCar(self.app.trains, self.traincar_model, segment, t)
