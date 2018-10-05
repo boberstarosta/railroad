@@ -1,5 +1,5 @@
 
-from ..geometry import dist_to_segment
+from ..geometry import dist_to_segment_sq
 
 
 class Network:
@@ -47,13 +47,14 @@ class Network:
         return None if nearest_segment is None else nearest_segment.parent_edge
     
     def get_nearest_track_segment(self, position, max_distance=40):
+        max_distance_sq = max_distance**2
         nearest_segment = None
-        shortest_distance = float("inf")
+        shortest_distance_sq = float("inf")
         for track_segment in self.track_segments:
-            distance = dist_to_segment(position, track_segment.nodes[0].position, track_segment.nodes[1].position)
-            if distance < shortest_distance and distance <= max_distance:
+            distance_sq = dist_to_segment_sq(position, track_segment.nodes[0].position, track_segment.nodes[1].position)
+            if distance_sq < shortest_distance_sq and distance_sq <= max_distance_sq:
                 nearest_segment = track_segment
-                shortest_distance = distance
+                shortest_distance_sq = distance_sq
         return nearest_segment
     
     def get_nearest_track_object(self, position, max_distance=40):

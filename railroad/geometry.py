@@ -51,6 +51,9 @@ def nearest_point_on_line(pos, point1, point2):
 def dist_to_segment(pos, point1, point2):
     return (nearest_point_on_segment(pos, point1, point2) - pos).length
 
+def dist_to_segment_sq(pos, point1, point2):
+    return (nearest_point_on_segment(pos, point1, point2) - pos).length_sq
+
 def shortest_side_of_triangle(points):
     min_len_sq = None
     shortest = None
