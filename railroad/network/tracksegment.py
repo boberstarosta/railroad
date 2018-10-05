@@ -1,6 +1,8 @@
 
 from .baseedge import BaseEdge
-from ..trains.traincar import TrainCar
+from .signals.signal import Signal
+from .signals.blocksignal import BlockSignal
+from .opentrackmarker import OpenTrackMarker
 
 
 class TrackSegment(BaseEdge):
@@ -26,7 +28,7 @@ class TrackSegment(BaseEdge):
     def _is_valid_to(to, to_classes, rotated, min_t, max_t, exclude):
         return (
             type(to) in to_classes
-            and (isinstance(to, TrainCar) or to.rotated == rotated)  # Check for rotated if it's not a traincar
+            and (type(to) not in [Signal, BlockSignal, OpenTrackMarker] or to.rotated == rotated)
             and (min_t is None or to.t >= min_t)
             and (max_t is None or to.t <= max_t)
             and to not in exclude
