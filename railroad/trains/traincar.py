@@ -18,7 +18,7 @@ class TrainCar(BaseTrackObject):
         self.coupled_traincars = [None, None]
         self.couplings = []
         self._direction = None
-        self.velocity = -1000
+        self.velocity = -4500
         if parent_consist is None:
             self.parent_consist = Consist(trains)
         else:
