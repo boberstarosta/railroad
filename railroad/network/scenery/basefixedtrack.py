@@ -11,6 +11,7 @@ class BaseFixedTrack(BaseSceneryObject):
 
     def __init__(self, network, position, rel_node_positions, connection_indices, rotation=0):
         super().__init__(network, position, rotation)
+        self.relative_node_positions = rel_node_positions
         self.nodes = [Node(network, Vec()) for _ in rel_node_positions]
         self.edges = [Edge(network, self.nodes[i0], self.nodes[i1], True) for i0, i1 in connection_indices]
         self._update_node_positions()
@@ -29,5 +30,5 @@ class BaseFixedTrack(BaseSceneryObject):
         self._update_node_positions()
 
     def _update_node_positions(self):
-        # TODO: Transform relative node positions to get absolute positions.
-        pass
+        for rel_pos, node in zip(self.relative_node_positions, self.nodes):
+            node.position = rel_pos.rotated(self.rotation)
