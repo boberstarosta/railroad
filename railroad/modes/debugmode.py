@@ -145,6 +145,7 @@ class DebugMode(BaseMode):
 
         self.label.text = "\n".join([
             "len(traincars): {}".format(len(self.app.trains.traincars)),
+            "len(consists): {}".format(len(self.app.trains.consists)),
             "segment: {}".format(self.nearest_segment),
             "t: {}".format(self.nearest_t),
         ])
