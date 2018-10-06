@@ -3,6 +3,7 @@ from .basescanner import BaseScanner
 import railroad.trains.traincar
 import railroad.network.signals.signal
 import railroad.network.signals.blocksignal
+import railroad.network.signals.distantsignal
 import railroad.network.opentrackmarker
 
 
@@ -20,13 +21,19 @@ class SignalScanner(BaseScanner):
         self.run(caller.parent_segment, caller.t, caller.rotated)
 
     def check_segment(self, current_segment, node, min_t, max_t):
-            # Check for both traincars and signals
-            nearest_track_object = current_segment.nearest_track_object(
-                node,
-                railroad.trains.traincar.TrainCar,
+            # Always check for signals and open track markers
+            to_classes = [
                 railroad.network.signals.signal.Signal,
                 railroad.network.signals.blocksignal.BlockSignal,
                 railroad.network.opentrackmarker.OpenTrackMarker,
+            ]
+
+            # Check for traincars only if caller is not a DistantSignal
+            if not isinstance(self.caller, railroad.network.signals.distantsignal.DistantSignal):
+                to_classes.append(railroad.trains.traincar.TrainCar)
+
+            nearest_track_object = current_segment.nearest_track_object(
+                node, *to_classes,
                 min_t=min_t, max_t=max_t, exclude=[self.caller]
             )
 
