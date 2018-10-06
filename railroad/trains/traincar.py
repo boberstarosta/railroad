@@ -35,6 +35,8 @@ class TrainCar(BaseTrackObject):
             self.parent_consist.delete()
         self.trains.traincars.remove(self)
         self.parent_segment.traincars.remove(self)
+        while len(self.couplings) > 0:
+            self.couplings[-1].delete()
         super().delete()
 
     def on_parent_segment_changed(self, old_parent_segment, parent_segment):
