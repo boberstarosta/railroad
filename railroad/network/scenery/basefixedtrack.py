@@ -11,15 +11,15 @@ class BaseFixedTrack(BaseSceneryObject):
 
     def __init__(self, network, position, rel_node_positions, connection_indices, rotation=0):
         super().__init__(network, position, rotation)
-        self.relative_node_positions = rel_node_positions
-        self.nodes = [Node(network, Vec()) for _ in rel_node_positions]
-        self.edges = [Edge(network, self.nodes[i0], self.nodes[i1], True) for i0, i1 in connection_indices]
+        self._relative_node_positions = rel_node_positions
+        self._nodes = [Node(network, Vec()) for _ in rel_node_positions]
+        self._edges = [Edge(network, self._nodes[i0], self._nodes[i1], True) for i0, i1 in connection_indices]
         self._update_node_positions()
 
     def delete(self):
-        for edge in self.edges:
+        for edge in self._edges:
             edge.delete()
-        for node in self.nodes:
+        for node in self._nodes:
             node.delete()
         super().delete()
 
@@ -30,5 +30,5 @@ class BaseFixedTrack(BaseSceneryObject):
         self._update_node_positions()
 
     def _update_node_positions(self):
-        for rel_pos, node in zip(self.relative_node_positions, self.nodes):
+        for rel_pos, node in zip(self._relative_node_positions, self._nodes):
             node.position = rel_pos.rotated(self.rotation)
