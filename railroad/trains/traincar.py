@@ -8,8 +8,6 @@ from .coupling import Coupling
 
 class TrainCar(BaseTrackObject):
 
-    coupling_length = 50
-
     def __init__(self, trains, model, parent_segment, t, rotated=False, parent_consist=None):
         super().__init__(trains.network, parent_segment, t, rotated)
         self.trains = trains
@@ -66,7 +64,7 @@ class TrainCar(BaseTrackObject):
 
         scan = railroad.network.scanners.Scanner(
             self.parent_segment, self.t, coupled_index == 0 and not self.rotated,
-            self.model.length/2 + self.coupling_length + model.length/2
+            self.model.length/2 + Coupling.length + model.length/2
         )
 
         if scan.final_segment is None:

@@ -5,7 +5,7 @@ from .. import graphics
 
 class Coupling:
 
-    length = 200
+    length = 50
 
     def __init__(self, *traincars):
         self.traincars = traincars
@@ -14,7 +14,7 @@ class Coupling:
             group=graphics.group.couplings,
             batch=traincars[0].trains.network.app.batch
         )
-        self.sprite.scale = self.length / self.sprite.width
+        self.sprite.scale = 3*self.length / self.sprite.width
         for traincar in self.traincars:
             traincar.couplings.append(self)
         self.update_sprite()

@@ -3,6 +3,7 @@ from .. import geometry
 from ..trains.models import *
 from ..trains.traincar import TrainCar
 from ..trains.wheel import Wheel
+from ..trains.coupling import Coupling
 from ..network.scanners import TrackObjectScanner
 from .basemode import BaseMode
 
@@ -29,12 +30,12 @@ class AddTrainCarMode(BaseMode):
             if traincar_scan.final_object is not None:
                 traincar = traincar_scan.final_object
                 wheel = wheel_scan.final_object
-                min_length = self.traincar_model.length/2 + TrainCar.coupling_length + traincar.model.length/2
+                min_length = self.traincar_model.length/2 + Coupling.length + traincar.model.length/2
                 if traincar_scan.length_travelled < min_length:
                     other_tcs = traincar_scans[(i + 1)%2]
                     if other_tcs.final_object is not None:
                         other_min_length =\
-                            self.traincar_model.length/2 + TrainCar.coupling_length + other_tcs.final_object.model.length/2
+                            self.traincar_model.length/2 + Coupling.length + other_tcs.final_object.model.length/2
                         if other_tcs.length_travelled < other_min_length:
                             print("Both too close")
                             return
