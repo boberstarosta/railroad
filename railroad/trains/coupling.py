@@ -5,7 +5,7 @@ from .. import graphics
 
 class Coupling:
 
-    length = 150
+    length = 200
 
     def __init__(self, *traincars):
         self.traincars = traincars
@@ -30,16 +30,7 @@ class Coupling:
             other_tc = self.traincars[(i + 1)%len(self.traincars)]
             tc_indices[i] = tc.coupled_traincars.index(other_tc)
 
-        directions = [None]*len(self.traincars)
-        for i, (tc, other_index) in enumerate(zip(self.traincars, tc_indices)):
-            directions[i] = tc.direction if other_index == 1 else -tc.direction
+        positions = [tc.wheels[tc_indices[i]].position for i, tc in enumerate(self.traincars)]
 
-        tc_ends = [tc.position + tc.direction*tc.model.length/2 for tc in self.traincars]
-
-        self.sprite.position = (tc_ends[0] + tc_ends[1]) / 2
-        self.sprite.rotation = -(tc_ends[1] - tc_ends[0]).angle
-
-        # Debugging
-        self.sprite.position = (self.traincars[1].position + self.traincars[0].position)/2
-
-        print("Coupling.update_sprite {}".format(self.sprite.position))
+        self.sprite.position = (positions[0] + positions[1]) / 2
+        self.sprite.rotation = -(positions[1] - positions[0]).angle
