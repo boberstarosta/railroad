@@ -1,15 +1,15 @@
 
 import pyglet
-from .. import graphics
-from ..vec import Vec
+from railroad import graphics
+from railroad.vec import Vec
 
 
-class SceneryObject:
+class BaseSceneryObject:
 
-    def __init__(self, network, position, rotation=0):
+    def __init__(self, network, image, position, rotation=0):
         self.network = network
         self.sprite = pyglet.sprite.Sprite(
-            graphics.img.tree,
+            image,
             x=position[0], y=position[1],
             batch=network.app.batch,
             group=graphics.group.top
@@ -22,6 +22,12 @@ class SceneryObject:
         self.sprite.delete()
         self.network.scenery_objects.remove(self)
 
+    def on_position_changed(self, position):
+        pass
+
+    def on_rotation_changed(self, rotation):
+        pass
+
     @property
     def position(self):
         return Vec(self.sprite.position)
@@ -30,6 +36,7 @@ class SceneryObject:
     def position(self, value):
         if value != self.sprite.position:
             self.sprite.position = value
+            self.on_position_changed(value)
 
     @property
     def rotation(self):
@@ -39,3 +46,4 @@ class SceneryObject:
     def rotation(self, value):
         if value != self.sprite.rotation:
             self.sprite.rotation = value
+            self.on_rotation_changed(value)

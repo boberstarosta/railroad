@@ -6,17 +6,26 @@ from railroad.network.signals.signal import Signal
 from railroad.network.signals.blocksignal import BlockSignal
 from railroad.network.signals.distantsignal import DistantSignal
 from .opentrackmarker import OpenTrackMarker
-from .sceneryobject import SceneryObject
+from .scenery.tree import Tree
 
 
-str_to_type = {
-    "S": Signal,
-    "BS": BlockSignal,
-    "DS": DistantSignal,
-    "OTM": OpenTrackMarker,
-}
+class signal:
+    str_to_type = {
+        "S": Signal,
+        "BS": BlockSignal,
+        "DS": DistantSignal,
+        "OTM": OpenTrackMarker,
+    }
 
-type_to_str = {v: k for k, v in str_to_type.items()}
+    type_to_str = {v: k for k, v in str_to_type.items()}
+
+
+class scenery:
+    str_to_type = {
+        "T": Tree
+    }
+
+    type_to_str = {v: k for k, v in str_to_type.items()}
 
 
 def save_network(network, filename):
@@ -36,7 +45,7 @@ def save_network(network, filename):
 
     for sto in network.static_track_objects:
         symbol = "TO"
-        type_ = type_to_str[type(sto)]
+        type_ = signal.type_to_str[type(sto)]
         parent_edge = str(network.edges.index(sto.parent_segment.parent_edge))
         parent_segment_index = str(sto.parent_segment.parent_edge.track_segments.index(sto.parent_segment))
         t = str(sto.t)
@@ -45,9 +54,10 @@ def save_network(network, filename):
 
     for so in network.scenery_objects:
         symbol = "SO"
+        type_ = scenery.type_to_str[type(so)]
         pos = "{},{}".format(so.position.x, so.position.y)
         rotation = str(so.rotation)
-        lines.append("|".join((symbol, pos, rotation)))
+        lines.append("|".join((symbol, type_, pos, rotation)))
 
     with open(filename, mode="w") as f:
         f.write("\n".join(lines))
@@ -93,17 +103,18 @@ def load_network(network, filename):
         Edge(network, node1, node2, straight)
 
     for s_type, s_edge, s_segment_index, s_t, s_rot in to_records:
-        type_ = str_to_type[s_type]
+        type_ = signal.str_to_type[s_type]
         edge = network.edges[int(s_edge)]
         parent_segment = edge.track_segments[int(s_segment_index)]
         t = float(s_t)
         rotated = s_rot == "True"
         type_(network, parent_segment, t, rotated=rotated)
 
-    for s_position, s_rotation in so_records:
+    for s_type, s_position, s_rotation in so_records:
+        type_ = scenery.str_to_type[s_type]
         position = Vec([float(s) for s in s_position.split(",")])
         rotation = float(s_rotation)
-        SceneryObject(network, position, rotation)
+        type_(network, position, rotation)
 
     for node in nodes_to_switch:
         node.switch()
