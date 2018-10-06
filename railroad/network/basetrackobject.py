@@ -27,8 +27,9 @@ class BaseTrackObject:
     @parent_segment.setter
     def parent_segment(self, value):
         if value != self._parent_segment:
-            self._parent_segment.track_objects.remove(self)
+            old_parent_segment = self._parent_segment
             self._parent_segment = value
+            old_parent_segment.track_objects.remove(self)
             self._parent_segment.track_objects.append(self)
             self.on_parent_segment_changed(self._parent_segment)
 

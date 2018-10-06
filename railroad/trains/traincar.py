@@ -36,7 +36,7 @@ class TrainCar(BaseTrackObject):
         self.trains.traincars.remove(self)
         self.parent_segment.traincars.remove(self)
 
-    def update(self, dt, velocity):
+    def update_velocity(self, dt, velocity):
         if velocity == 0:
             return
 

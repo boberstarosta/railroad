@@ -14,7 +14,7 @@ class Consist:
 
     def update(self, dt):
         for traincar in self.traincars:
-            traincar.update(dt, self.velocity)
+            traincar.update_velocity(dt, self.velocity)
 
     @property
     def engine_count(self):
