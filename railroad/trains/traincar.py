@@ -32,13 +32,16 @@ class TrainCar(BaseTrackObject):
 
     def couple_new_traincar(self, model, coupled_index):
         if self.coupled_traincars[coupled_index] is not None:
-            print("Coupling {} already taken".format(coupled_index))
+            print("TrainCar.couple_new_traincar: Coupling {} already taken.".format(coupled_index))
             return
 
         scan = railroad.network.scanners.Scanner(
             self.parent_segment, self.t, coupled_index == 0 and not self.rotated,
             self.model.length/2 + self.coupling_length + model.length/2
         )
+
+        if scan.final_segment is None:
+            print("TrainCar.couple_new_traincar: Ran out of track.")
 
         new_traincar = TrainCar(
             self.trains, model, scan.final_segment, scan.final_t)
@@ -49,6 +52,7 @@ class TrainCar(BaseTrackObject):
         new_traincar.coupled_traincars[new_coupled_index] = self
 
         print("\n".join([
+            "TrainCar.couple_new_traincar complete. Status:",
             "self rotated: {}".format(self.rotated),
             "coupled index: {}".format(coupled_index),
             "new rotated: {}".format(new_traincar.rotated),
