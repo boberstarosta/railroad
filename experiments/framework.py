@@ -1,6 +1,6 @@
 
 from pyglet.gl import *
-from .vec import Vec
+from railroad.vec import Vec
 
 
 window = pyglet.window.Window(width=1200, height=800)
@@ -42,7 +42,7 @@ class draw:
             glColor4f(*color)
             glBegin(GL_LINES)
             glVertex2f(*start)
-            glVertex2f(*(start + vector * length))
+            glVertex2f(*(start + vector.normalized * length))
             glEnd()
             glBegin(GL_POINTS)
             glVertex2f(*start)
