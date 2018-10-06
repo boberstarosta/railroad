@@ -6,6 +6,8 @@ from .wheel import Wheel
 
 class TrainCar(BaseTrackObject):
 
+    coupling_length = 50
+
     def __init__(self, trains, model, parent_segment, t, rotated=False):
         super().__init__(trains.network, parent_segment, t, rotated)
         self.trains = trains
@@ -13,6 +15,7 @@ class TrainCar(BaseTrackObject):
         self._position = None
         self.sprite = model.create_sprite(trains.network.app.batch)
         self.wheels = []
+        self.coupled_traincars = [None, None]
         self._direction = None
         trains.traincars.append(self)
         parent_segment.traincars.append(self)
@@ -26,6 +29,31 @@ class TrainCar(BaseTrackObject):
 
     def update(self, dt):
         pass
+
+    def couple_new_traincar(self, model, coupled_index):
+        if self.coupled_traincars[coupled_index] is not None:
+            print("Coupling {} already taken".format(coupled_index))
+            return
+
+        scan = railroad.network.scanners.Scanner(
+            self.parent_segment, self.t, coupled_index == 0 and not self.rotated,
+            self.model.length/2 + self.coupling_length + model.length/2
+        )
+
+        new_traincar = TrainCar(
+            self.trains, model, scan.final_segment, scan.final_t)
+
+        self.coupled_traincars[coupled_index] = new_traincar
+
+        new_coupled_index = 1 if scan.final_backwards else 0
+        new_traincar.coupled_traincars[new_coupled_index] = self
+
+        print("\n".join([
+            "self rotated: {}".format(self.rotated),
+            "coupled index: {}".format(coupled_index),
+            "new rotated: {}".format(new_traincar.rotated),
+            "new_coupled_index: {}".format(new_coupled_index),
+        ]))
 
     def _update_position(self):
         for wheel in self.wheels:

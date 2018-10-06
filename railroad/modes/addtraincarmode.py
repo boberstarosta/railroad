@@ -2,8 +2,8 @@
 from .. import geometry
 from ..trains.models import *
 from ..trains.traincar import TrainCar
+from ..trains.wheel import Wheel
 from ..network.scanners import TrackObjectScanner
-from ..network.scanners import Scanner
 from .basemode import BaseMode
 
 
@@ -13,43 +13,34 @@ class AddTrainCarMode(BaseMode):
     def __init__(self, app):
         super().__init__(app)
         self.traincar_model = TrainCarBulk
-        self.attach_length = 50
-
-    def attach_traincar(self, traincar_scan, backwards):
-        length_scan = Scanner(
-            traincar_scan.final_object.parent_segment,
-            traincar_scan.final_object.t,
-            backwards,
-            self.traincar_model.length/2 + self.attach_length + traincar_scan.final_object.model.length/2
-        )
-
-        TrainCar(
-            self.app.trains,
-            self.traincar_model,
-            length_scan.final_segment,
-            length_scan.final_t
-        )
 
     def add_traincar(self, segment, t):
 
+        wheel_scans = [
+            TrackObjectScanner(segment, t, True, Wheel),
+            TrackObjectScanner(segment, t, False, Wheel),
+        ]
         traincar_scans = [
             TrackObjectScanner(segment, t, True, TrainCar),
             TrackObjectScanner(segment, t, False, TrainCar),
         ]
 
-        for i, tcs in enumerate(traincar_scans):
-            if tcs.final_object is not None:
-                min_length = self.traincar_model.length/2 + self.attach_length + tcs.final_object.model.length/2
-                if tcs.length_travelled < min_length:
+        for i, (traincar_scan, wheel_scan) in enumerate(zip(traincar_scans, wheel_scans)):
+            if traincar_scan.final_object is not None:
+                traincar = traincar_scan.final_object
+                wheel = wheel_scan.final_object
+                min_length = self.traincar_model.length/2 + TrainCar.coupling_length + traincar.model.length/2
+                if traincar_scan.length_travelled < min_length:
                     other_tcs = traincar_scans[(i + 1)%2]
                     if other_tcs.final_object is not None:
                         other_min_length =\
-                            self.traincar_model.length/2 + self.attach_length + other_tcs.final_object.model.length/2
+                            self.traincar_model.length/2 + TrainCar.coupling_length + other_tcs.final_object.model.length/2
                         if other_tcs.length_travelled < other_min_length:
                             print("Both too close")
                             return
                     print("One too close")
-                    self.attach_traincar(tcs, i == 1)
+                    couple_index = 0 if wheel is traincar.wheels[0] else 1
+                    traincar.couple_new_traincar(self.traincar_model, couple_index)
                     return
 
         TrainCar(self.app.trains, self.traincar_model, segment, t)
