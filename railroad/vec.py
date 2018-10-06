@@ -80,3 +80,11 @@ class Vec(collections.namedtuple('Vec', ['x', 'y'])):
         radians = math.radians(angle)
         return cls(math.cos(radians)*length, math.sin(radians)*length)
 
+    def rotated(self, angle):
+        """ Returns a new instance of the same length, rotated by angle in degrees, counterclockwise """
+
+        radians = math.radians(angle)
+        return self.__class__(
+            self.x*math.cos(radians) - self.y*math.sin(radians),
+            self.x*math.sin(radians) + self.y*math.cos(radians)
+        )
