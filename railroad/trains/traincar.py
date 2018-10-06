@@ -29,13 +29,17 @@ class TrainCar(BaseTrackObject):
         self._update_position()
 
     def delete(self):
-        super().delete()
         self.sprite.delete()
         self.parent_consist.traincars.remove(self)
         if len(self.parent_consist.traincars) == 0:
             self.parent_consist.delete()
         self.trains.traincars.remove(self)
         self.parent_segment.traincars.remove(self)
+        super().delete()
+
+    def on_parent_segment_changed(self, old_parent_segment, parent_segment):
+        old_parent_segment.traincars.remove(self)
+        parent_segment.traincars.append(self)
 
     def update_velocity(self, dt):
         if self.velocity == 0:
