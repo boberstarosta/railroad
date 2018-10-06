@@ -46,7 +46,6 @@ class AddTrainCarMode(BaseMode):
 
         TrainCar(self.app.trains, self.traincar_model, segment, t)
 
-
     def on_mouse_press(self, x, y, buttons, modifiers):
         if buttons & pyglet.window.mouse.LEFT:
             mouse = self.app.camera.to_world(x, y)
