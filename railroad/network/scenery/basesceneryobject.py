@@ -6,10 +6,12 @@ from railroad.vec import Vec
 
 class BaseSceneryObject:
 
-    def __init__(self, network, image, position, rotation=0):
+    image = None
+
+    def __init__(self, network, position, rotation=0):
         self.network = network
         self.sprite = pyglet.sprite.Sprite(
-            image,
+            self.image,
             x=position[0], y=position[1],
             batch=network.app.batch,
             group=graphics.group.top
