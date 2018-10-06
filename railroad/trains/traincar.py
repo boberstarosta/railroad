@@ -18,6 +18,7 @@ class TrainCar(BaseTrackObject):
         self.wheels = []
         self.coupled_traincars = [None, None]
         self._direction = None
+        self.velocity = 500
         if parent_consist is None:
             self.parent_consist = Consist(trains)
         else:
@@ -36,13 +37,18 @@ class TrainCar(BaseTrackObject):
         self.trains.traincars.remove(self)
         self.parent_segment.traincars.remove(self)
 
-    def update_velocity(self, dt, velocity):
-        if velocity == 0:
+    def update_velocity(self, dt):
+        if self.velocity == 0:
             return
 
-        backwards = not (self.rotated != velocity > 0)
-        delta_pos = abs(velocity * dt)
+        backwards = self.velocity < 0
+        delta_pos = abs(self.velocity * dt)
         scan = railroad.network.scanners.Scanner(self.parent_segment, self.t, backwards, delta_pos)
+
+        if backwards != scan.final_backwards:
+            self.velocity *= -1
+            self.rotated = not self.rotated
+
         self.parent_segment = scan.final_segment
         self._t = scan.final_t
         self._update_position()
@@ -81,8 +87,8 @@ class TrainCar(BaseTrackObject):
             self.wheels[-1].delete()
 
         scans = [
-            railroad.network.scanners.DistanceScanner(self, backwards=True),
-            railroad.network.scanners.DistanceScanner(self, backwards=False),
+            railroad.network.scanners.DistanceScanner(self, backwards=not self.rotated),
+            railroad.network.scanners.DistanceScanner(self, backwards=self.rotated),
         ]
         for scan in scans:
             self.wheels.append(Wheel(

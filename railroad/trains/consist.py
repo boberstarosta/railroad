@@ -4,7 +4,6 @@ class Consist:
     def __init__(self, trains):
         self.trains = trains
         self.traincars = []
-        self.velocity = -500
         trains.consists.append(self)
 
     def delete(self):
@@ -14,7 +13,7 @@ class Consist:
 
     def update(self, dt):
         for traincar in self.traincars:
-            traincar.update_velocity(dt, self.velocity)
+            traincar.update_velocity(dt)
 
     @property
     def engine_count(self):

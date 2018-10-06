@@ -32,19 +32,6 @@ class BaseTrackObject:
             old_parent_segment.track_objects.remove(self)
             self._parent_segment.track_objects.append(self)
 
-            # Preserve direction if changing to neighboring segment.
-            common_node = None
-            common_node_old_index = None
-            for i, node in enumerate(old_parent_segment.nodes):
-                if old_parent_segment.nodes[i].other_segment(old_parent_segment) is value:
-                    common_node = node
-                    common_node_old_index = i
-                    break
-            if common_node is not None:
-                common_node_new_index = value.nodes.index(common_node)
-                if common_node_old_index == common_node_new_index:
-                    self.rotated = not self.rotated
-
             self.on_parent_segment_changed(self._parent_segment)
 
     @property
