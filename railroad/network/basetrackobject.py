@@ -3,19 +3,34 @@ class BaseTrackObject:
 
     def __init__(self, network, parent_segment, t, rotated):
         self.network = network
-        self.parent_segment = parent_segment
-        self.parent_segment.track_objects.append(self)
+        self._parent_segment = parent_segment
+        self._parent_segment.track_objects.append(self)
         self._t = t
         self._rotated = rotated
 
     def delete(self):
-        self.parent_segment.track_objects.remove(self)
+        self._parent_segment.track_objects.remove(self)
 
     def update(self, dt):
         pass
 
+    def on_parent_segment_changed(self, parent_segment):
+        pass
+
     def on_t_changed(self, t):
         pass
+
+    @property
+    def parent_segment(self):
+        return self._parent_segment
+
+    @parent_segment.setter
+    def parent_segment(self, value):
+        if value != self._parent_segment:
+            self._parent_segment.track_objects.remove(self)
+            self._parent_segment = value
+            self._parent_segment.track_objects.append(self)
+            self.on_parent_segment_changed(self._parent_segment)
 
     @property
     def t(self):
