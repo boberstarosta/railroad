@@ -3,6 +3,7 @@ from ..network.basetrackobject import BaseTrackObject
 import railroad.network.scanners
 from .wheel import Wheel
 from .consist import Consist
+from .coupling import Coupling
 
 
 class TrainCar(BaseTrackObject):
@@ -17,8 +18,9 @@ class TrainCar(BaseTrackObject):
         self.sprite = model.create_sprite(trains.network.app.batch)
         self.wheels = []
         self.coupled_traincars = [None, None]
+        self.couplings = []
         self._direction = None
-        self.velocity = -4500  # 162 km/h
+        self.velocity = -1000
         if parent_consist is None:
             self.parent_consist = Consist(trains)
         else:
@@ -78,6 +80,8 @@ class TrainCar(BaseTrackObject):
         new_coupled_index = 1 if scan.final_backwards else 0
         new_traincar.coupled_traincars[new_coupled_index] = self
 
+        new_coupling = Coupling(self, new_traincar)
+
         print("\n".join([
             "TrainCar.couple_new_traincar complete. Status:",
             "self rotated: {}".format(self.rotated),
@@ -106,6 +110,9 @@ class TrainCar(BaseTrackObject):
         self.sprite.position = self._position
         self._direction = (self.wheels[1].position - self.wheels[0].position).normalized
         self.sprite.rotation = -self._direction.angle
+
+        for coupling in self.couplings:
+            coupling.update_sprite()
 
     @property
     def t(self):
