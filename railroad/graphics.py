@@ -21,6 +21,7 @@ class img:
     corona_red    = pyglet.resource.image("data/corona red.png")
     corona_white  = pyglet.resource.image("data/corona white.png")
 
+    coupling      = pyglet.resource.image("data/trains/coupling.png")
     loco_heavy    = pyglet.resource.image("data/trains/loco heavy.png")
     traincar_bulk = pyglet.resource.image("data/trains/traincar bulk.png")
     traincar_test = pyglet.resource.image("data/trains/traincar test.png")
@@ -57,9 +58,10 @@ class group:
     ballast = pyglet.graphics.TextureGroup(tex.ballast, parent=EnableBlendGroup(parent=pyglet.graphics.OrderedGroup(1)))
     rails   = pyglet.graphics.TextureGroup(tex.rails, parent=EnableBlendGroup(parent=pyglet.graphics.OrderedGroup(2)))
 
-    trains  = pyglet.graphics.OrderedGroup(10)
-    signal  = pyglet.graphics.OrderedGroup(11)
-    corona  = pyglet.graphics.OrderedGroup(12)
+    couplings = pyglet.graphics.OrderedGroup(10)
+    trains  = pyglet.graphics.OrderedGroup(11)
+    signal  = pyglet.graphics.OrderedGroup(12)
+    corona  = pyglet.graphics.OrderedGroup(13)
 
     top     = pyglet.graphics.OrderedGroup(20)
 
