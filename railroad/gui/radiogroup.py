@@ -89,6 +89,9 @@ class RadioGroup:
         self.check_sprite.y = self.sprites[value].y
         self.on_index_changed(value)
 
+    def on_index_changed(self, value):
+        pass
+
     def on_resize(self, width, height):
         self._update_positions(width, height)
 
